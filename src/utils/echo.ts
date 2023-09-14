@@ -1,18 +1,3 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import { createPinia } from "pinia";
-const pinia = createPinia();
-import "./style.css";
-import router from "./router";
-
-
-
-
-const app = createApp(App);
-app.use(router);
-app.use(pinia);
-
-
 import axios from 'axios'
 
 import Echo from "laravel-echo"
@@ -63,7 +48,3 @@ window.Echo = new Echo({
     },
 });
 
-
-
-
-app.mount("#app");

@@ -1,9 +1,30 @@
 <script setup lang="ts">
+import {onMounted} from 'vue';
+
 import Aside from "../components/Aside.vue";
 import Canvas from "../components/Canvas.vue";
 import CardBingoList from "../components/CardBingoList.vue";
 
-let startGame = false;
+onMounted(() => {
+
+    window.Echo
+      
+      .private('game.session.1')
+      .listen('ReportStatusToFrontEndEvent', (e) => {
+
+        console.log(e);
+
+      })
+      .listen('StartPlayEvent', (e) => {
+
+        console.log(e);
+
+      })
+
+
+})
+
+
 </script>
 
 <template>
