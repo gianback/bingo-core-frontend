@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Aside from "../components/Aside.vue";
 import Canvas from "../components/Canvas.vue";
-import CardBingo from "../components/CardBingo.vue";
+import CardBingoList from "../components/CardBingoList.vue";
 
 let startGame = false;
 </script>
@@ -10,12 +10,12 @@ let startGame = false;
   <main class="min-h-screen bg-[#313131]">
     <div class="flex flex-col pt-12 px-8">
       <h1 class="text-6xl text-white uppercase font-bold italic">
-        Virtual bingo!
+        Virtual bingo hot!
       </h1>
       <!-- <button on:click={() => (startGame = !startGame)}> change </button> -->
       <Canvas :startGame="startGame" />
     </div>
     <Aside />
-    <CardBingo />
+    <CardBingoList />
   </main>
 </template>
