@@ -16,16 +16,21 @@ const { cardList } = useCardsStore();
   </section>
 </template>
 <style lang="postcss">
-.cardList-list {
-  @apply flex;
-  max-width: 500px;
-  height: 300px;
-  scroll-snap-type: x mandatory;
-  overflow-x: scroll;
-  overflow-y: hidden;
+.cardList {
+
+ &-list{
+
+   @apply flex w-full;
+  gap: 10px;
+   scroll-snap-type: x mandatory;
+   overflow-x: scroll;
+   overflow-y: hidden;
+  }
+  &-item{
+      scroll-snap-align: center;
+      min-width: 320px;
+  
+  }
 }
-.cardList-item {
-  scroll-snap-align: center;
-  width: 300px;
-}
+
 </style>
