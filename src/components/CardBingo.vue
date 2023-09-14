@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import freeSpace from "../assets/free-space.svg";
 
-const getRandomNumbers = () => {
-  let numbers = [];
-  for (let i = 0; i < 24; i++) {
-    numbers.push(Math.round(Math.random() * 99));
-  }
-  return numbers;
-};
-
-const numbers = getRandomNumbers();
+defineProps<{
+  numbers: number[];
+}>();
 </script>
 
 <template>
