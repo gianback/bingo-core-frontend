@@ -1,12 +1,20 @@
 <script setup lang="ts">
+import { useCardsStore } from "../store/cardsStore";
 import IconArrowLeftVue from "./IconArrowLeft.vue";
+import { getRandomNumbers } from "../utils/getRandomNumbers";
 
 const isOpen: boolean = false;
-const handleClick = () => {};
+
+const { addCard } = useCardsStore();
+const handleClick = () => {
+  const newNumbersToCard = getRandomNumbers();
+
+  addCard(newNumbersToCard);
+};
 </script>
 
 <template>
-  <aside :class="`fixed ${isOpen ? 'right-0' : 'right-[0]'}`">
+  <aside :class="`fixed top-36 ${isOpen ? 'right-0' : 'right-[0]'}`">
     <button class="text-white absolute top-4 -left-8">
       <!-- <img class="text-white" src="/arrow-left-aside.svg" alt="" /> -->
       <IconArrowLeftVue :isOpen="isOpen" />
