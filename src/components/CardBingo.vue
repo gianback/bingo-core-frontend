@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <article class="max-w-[320px] bg-[#D26D59] py-3">
+  <article class="max-w-[300px] w-full bg-[#D26D59] py-3">
     <header>
       <h2
         class="text-white text-3xl uppercase font-bold italic text-center py-3"

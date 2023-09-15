@@ -4,7 +4,7 @@ import CardBingo from "./CardBingo.vue";
 const { cardList } = useCardsStore();
 </script>
 <template>
-  <section class="cardList-section">
+  <section class="mt-8">
     <template v-if="cardList.length > 0">
       <ul class="cardList-list">
         <li v-for="(card, index) in cardList" class="cardList-item">
@@ -17,20 +17,16 @@ const { cardList } = useCardsStore();
 </template>
 <style lang="postcss">
 .cardList {
-
- &-list{
-
-   @apply flex w-full;
-  gap: 10px;
-   scroll-snap-type: x mandatory;
-   overflow-x: scroll;
-   overflow-y: hidden;
+  &-list {
+    @apply flex w-full;
+    gap: 10px;
+    scroll-snap-type: x mandatory;
+    overflow-x: scroll;
+    overflow-y: hidden;
   }
-  &-item{
-      scroll-snap-align: center;
-      min-width: 320px;
-  
+  &-item {
+    scroll-snap-align: center;
+    flex-shrink: 0;
   }
 }
-
 </style>
