@@ -36,8 +36,8 @@ const staticBalls = [
   { x: 1090, y: 560, vx: 20, vy: 20 },
 ];
 const canvasWidth = 800;
-const canvasHeight = 600;
-const frameDiameter = 400; // Diámetro del marco whiteondo
+const canvasHeight = 450;
+const frameDiameter = 350; // Diámetro del marco whiteondo
 const frameX = canvasWidth - frameDiameter - 50; // Coordenada X del marco whiteondo a la derecha, separado por 200 píxeles
 const frameY = (canvasHeight - frameDiameter) / 2; // Coordenada Y del marco whiteondo centrado verticalmente
 
@@ -69,21 +69,21 @@ onMounted(() => {
     /* soporte base */
     ctx.beginPath();
     ctx.lineWidth = 1;
-    ctx.rect(340, 580, 420, 10);
+    ctx.rect(400, 440, 350, 10);
     ctx.fillStyle = "white";
 
     /* soporte */
     ctx.fill();
     ctx.beginPath();
     ctx.lineWidth = 1;
-    ctx.rect(750, 250, 10, 330);
+    ctx.rect(750, 250, 10, 300);
     ctx.fillStyle = "white";
     ctx.fill();
 
     ctx.fill();
     ctx.beginPath();
     ctx.lineWidth = 1;
-    ctx.rect(340, 250, 10, 330);
+    ctx.rect(390, 250, 10, 300);
     ctx.fillStyle = "white";
     ctx.fill();
 
@@ -91,21 +91,21 @@ onMounted(() => {
     ctx.fill();
     ctx.beginPath();
     ctx.lineWidth = 1;
-    ctx.rect(200, 250, 150, 10);
+    ctx.rect(250, 250, 150, 10);
     ctx.fillStyle = "white";
     ctx.fill();
 
     ctx.fill();
     ctx.beginPath();
     ctx.lineWidth = 1;
-    ctx.rect(200, 250, 10, 150);
+    ctx.rect(240, 250, 10, 150);
     ctx.fillStyle = "white";
     ctx.fill();
 
     ctx.fill();
     ctx.beginPath();
     ctx.lineWidth = 1;
-    ctx.rect(60, 400, 150, 10);
+    ctx.rect(100, 400, 150, 10);
     ctx.fillStyle = "white";
     ctx.fill();
 
