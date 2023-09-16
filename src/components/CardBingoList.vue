@@ -4,7 +4,7 @@ import CardBingo from "./CardBingo.vue";
 const { cardList } = useCardsStore();
 </script>
 <template>
-  <section class="mt-8">
+  <section class="mt-16">
     <template v-if="cardList.length > 0">
       <ul class="cardList-list">
         <li v-for="(card, index) in cardList" class="cardList-item">
