@@ -10,11 +10,16 @@ let startGame = ref<boolean>(false);
 let isMobile = ref<boolean>(window.innerWidth < 768);
 const { addCardsToCreate } = useCardsStore();
 onMounted(() => {
-  window.Echo.private("game.session.1")
-    .listen("ReportStatusToFrontEndEvent", (e: string) => {
-      console.log(e);
+  window.Echo.private("game.session.2")
+
+    .listen("StartPlayEvent", (e: object) => {
+      console.log({ e });
+
+      startGame.value = true;
+
+      alert("iniciando juego desde el evento StartPlayEvent");
     })
-    .listen("StartPlayEvent", (e: string) => {
+    .listen("ReportStatusToFrontEndEvent", (e: string) => {
       console.log(e);
     });
 
@@ -43,9 +48,9 @@ const handleSubmit = (e: Event) => {
 <template>
   <main class="flex-1 bg-[#313131] px-8">
     <div class="home-ctn">
-      <!-- <h1 class="text-4xl text-white uppercase font-bold italic">
-        Virtual bingo hot!
-      </h1> -->
+      <h1 class="text-4xl text-white uppercase font-bold italic">
+        Virtual bingo hot! {{ startGame }}
+      </h1>
       <!-- <button on:click={() => (startGame = !startGame)}> change </button> -->
       <div class="order-3 md:order-none">
         <Acordion title="Leadersboard" v-if="isMobile">
@@ -181,6 +186,7 @@ const handleSubmit = (e: Event) => {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }

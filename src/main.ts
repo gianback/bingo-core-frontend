@@ -25,23 +25,25 @@ const echoOptions = {
   encrypted: true,
   disableStats: true,
   enabledTransports: ["ws", "wss"],
-  auth: {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNjk0NjM4MDgzLCJleHAiOjE2OTQ2NDE2ODMsIm5iZiI6MTY5NDYzODA4MywianRpIjoiRTZaNFNjTG93YnZvSXFCNiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.OetbAJGfrmd_egotYodsAZ8MhbTPJVMg8Svf1inm22s`,
-    },
-  },
   authorizer: (channel: any, _options: any) => {
-    // console.log({channel});
-    // console.log({options});
     return {
       authorize: (socketId: any, callback: any) => {
+        const uri = "http://bingo-core-backend.test/api/broadcasting/auth";
+
+        const data = {
+          socket_id: socketId,
+          channel_name: channel.name,
+        };
+        const headers = {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOTc4MTUyODU1MjM5MWFjNzRlM2E1MjAwNWJjZGM4MDQxYzdkYWQxZTZhZWRiMDg3YzdiMDJmMDdiMjhkNWJmYzQ0MzI0ZTdjN2ZkYmRkMTEiLCJpYXQiOjE2OTQ4ODAzMjcuNTcwOTY5LCJuYmYiOjE2OTQ4ODAzMjcuNTcwOTcxLCJleHAiOjE3MjY1MDI3MjcuNTY1NjcyLCJzdWIiOiIxMDEiLCJzY29wZXMiOltdfQ.l0MtU6kvalnVEjm3sfz7KMEcsWfXPaErLBy2p5UeVIDS9tu68wv4H4Whh8aaPERlxnVBDEdnhEh2CCY3slZr18NR9ooRpD4ttLxirWYY46ltQdqhE2Pzt4gB9m8cxiSY2BF8IxFkJ8xUjInIKuwvw-J9KaYey6I5HqKcncjMsfYpEi8dZ9-VyeWlzV-4x-vTEwgkFc9GxdpGuMah8BXBZKNS09U3rRo9krHPuUwx8p2v9L0EIqRmBjlisGb7wTQITeGH6ATDnmt8JWDy7hPvsHGanNsmaeR7rpBLeGgXIUttOLMyaOS_AOHin0QIU1zI_vNqLA64JXXHEr1HJxLbJ0ZugVV4nhLfc9nAnK4P8T2DtRqojd_b38DPB0MTukfzyoCAJQtDwFfS5d5oz6ZnE_3QnHGyzS27WzLJBJAT54ZCMNd7h47oIEGYT6dVyCevFyaHit652eIfCaRXIE-Ajhp1Iy-WJlJPidy49k7M8R5CaL73D7A2JN7dDqej0FP_eVvWxoD-9_oStABxezz1gMVmUE7vDznknTU1y6DCS1Drg894VCtxcGKiqzDrjMM_S68X7a-E-LFCy42y0T21Ej8ypXHmsqC8iMtHEGmvFsNOQDY88dMScUSYC6cCIEjv6-93rPHJEQNKmiSt6DoFRoHxUoeffOjurhcNlpbOjP8`,
+          },
+        };
+
         axios
-          .post("http://127.0.0.1:8000/api/broadcasting/auth", {
-            socket_id: socketId,
-            channel_name: channel.name,
-          })
+          .post(uri, data, headers)
           .then((response) => {
             callback(false, response.data);
           })
