@@ -55,14 +55,10 @@ const handleSubmit = (e: Event) => {
       <div class="order-3 md:order-none">
         <Acordion title="Leadersboard" v-if="isMobile">
           <div class="grid grid-cols-2">
-            <button
-              class="inline-block p-3 rounded-t-lg bg-gray-800 text-gray-300 hover:text-white"
-            >
+            <button class="inline-block p-3 rounded-t-lg bg-gray-800 text-gray-300 hover:text-white">
               Juego Actual
             </button>
-            <button
-              class="inline-block p-3 rounded-t-lg bg-gray-800 text-gray-300 hover:text-white"
-            >
+            <button class="inline-block p-3 rounded-t-lg bg-gray-800 text-gray-300 hover:text-white">
               Puntuaciones
             </button>
           </div>
@@ -71,20 +67,11 @@ const handleSubmit = (e: Event) => {
               <label for="card-number" class="text-white flex-shrink-0">
                 Numero de tarjetas
               </label>
-              <input
-                type="number"
-                class="rounded-sm w-full p-1"
-                id="card-number"
-                :value="1"
-                :min="1"
-                :max="20"
-                name="card-number"
-              />
+              <input type="number" class="rounded-sm w-full p-1" id="card-number" :value="1" :min="1" :max="20"
+                name="card-number" />
             </div>
-            <button
-              type="submit"
-              class="mt-2 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            >
+            <button type="submit"
+              class="mt-2 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
               Agregar
             </button>
           </form>
@@ -94,14 +81,10 @@ const handleSubmit = (e: Event) => {
         </Acordion>
         <div v-else>
           <div class="grid grid-cols-2">
-            <button
-              class="inline-block p-3 rounded-t-lg bg-gray-800 text-gray-300 hover:text-white"
-            >
+            <button class="inline-block p-3 rounded-t-lg bg-gray-800 text-gray-300 hover:text-white">
               Juego Actual
             </button>
-            <button
-              class="inline-block p-3 rounded-t-lg bg-gray-800 text-gray-300 hover:text-white"
-            >
+            <button class="inline-block p-3 rounded-t-lg bg-gray-800 text-gray-300 hover:text-white">
               Puntuaciones
             </button>
           </div>
@@ -110,20 +93,11 @@ const handleSubmit = (e: Event) => {
               <label for="card-number" class="text-white flex-shrink-0">
                 Numero de tarjetas
               </label>
-              <input
-                type="number"
-                class="rounded-sm w-full p-1"
-                id="card-number"
-                :value="1"
-                :min="1"
-                :max="20"
-                name="card-number"
-              />
+              <input type="number" class="rounded-sm w-full p-1" id="card-number" :value="1" :min="1" :max="20"
+                name="card-number" />
             </div>
-            <button
-              type="submit"
-              class="mt-2 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            >
+            <button type="submit"
+              class="mt-2 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
               Agregar
             </button>
           </form>
@@ -152,12 +126,14 @@ const handleSubmit = (e: Event) => {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
 }
+
 @media (max-width: 768px) {
   .home-ctn {
     display: flex;
     flex-direction: column;
   }
 }
+
 .canvas-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -166,6 +142,7 @@ const handleSubmit = (e: Event) => {
     grid-template-columns: 1fr;
   }
 }
+
 .current-ball {
   display: flex;
   align-items: center;
