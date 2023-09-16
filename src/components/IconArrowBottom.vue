@@ -1,11 +1,17 @@
+<script setup lang="ts">
+defineProps<{
+  isOpen: boolean;
+}>();
+</script>
 <template>
   <div>
     <svg
-      class="w-3 h-3 rotate-180 shrink-0"
+      class="w-3 h-3 shrink-0"
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 10 6"
+      :class="` ${isOpen ? 'rotate-180' : ''}`"
     >
       <path
         stroke="currentColor"

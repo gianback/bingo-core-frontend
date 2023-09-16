@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-
+import axios from "axios";
+import Echo from "laravel-echo";
+import PusherJs from "pusher-js";
 import Canvas from "../components/Canvas.vue";
 import CardBingoList from "../components/CardBingoList.vue";
 import Acordion from "../components/Acordion.vue";
@@ -10,6 +12,52 @@ let startGame = ref<boolean>(false);
 let isMobile = ref<boolean>(window.innerWidth < 768);
 const { addCardsToCreate } = useCardsStore();
 onMounted(() => {
+  const echoOptions = {
+    broadcaster: "pusher",
+    key: "local",
+    logToConsole: true,
+    wsHost: window.location.hostname,
+    // authEndpoint: 'http://127.0.0.1:8000/api/broadcasting/auth',
+    wsPort: 6001,
+    wssPort: 6001,
+    cluster: "mt1",
+    forceTLS: false,
+    encrypted: true,
+    disableStats: true,
+    enabledTransports: ["ws", "wss"],
+    authorizer: (channel: any, _options: any) => {
+      return {
+        authorize: (socketId: any, callback: any) => {
+          const uri = "http://bingo-core-backend.test/api/broadcasting/auth";
+
+          const data = {
+            socket_id: socketId,
+            channel_name: channel.name,
+          };
+          const headers = {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiY2QwYmRmNjc3YTM5ZDE0OWI1MWE2YmE1OGE0OWEyZmJhMzBiYTQwYzg3ZTI0Nzc4ZTNkOGIxZjM0MmYzNTM2OGE3Mzc0OTVhODFlNzhhYzYiLCJpYXQiOjE2OTQ4OTc2NTkuMzczNzkyLCJuYmYiOjE2OTQ4OTc2NTkuMzczNzk1LCJleHAiOjE3MjY1MjAwNTkuMzE5NjYzLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.KLvJICyTG0ykBHOIPwgP1WP-HwFI4E22MxLv8YpkDJ_4jIfM1OgESQGlnTGQaKix-ACXAI7hBu9rgTarz17Os40763tSjOY1yz25XLE1Rcd9p58ualxjcvsJqH2xmeMzWSgbUCxg1YMq1qE_TIJ2MCFtQBwZMj04sZLG8rATWcPR46fDu9rvBPTVL8H3tc9FetEZxKi2w5DeHbeXVB_VJu8Zgx6Q5B1zDS6BrH_Tjg242MN93xFH7mzFR7zGPEDF20CZfSKgTH-lCzld5Kw1LZV3GzLA57-8D2u1JzezFUfhQZtWqZxO7-Hy742fOFu6-f_9V-cHj_VEzOnXL81ShKW04rzlgS7OsTB10g7m_3xjAogtRHVKDE8UkpZRdG9oTQLr9O2t0ZvtjSP4bKNvBYsbt9gkkITMFzTTeTS0wflBAyDNq6pbhAhVnz72XZny1FrG5vuFwdSmwr9QuU0iu4rnFIuv0_7On-fWAlvBRElEQsh-boHudaIIzJNfJBOUJinN384xt979L2ahJEh_x9B8KR7Qxam3E2m1SxE0R4Gh6mpWnsG8NBeULAKcVRNvrgDyr1bAKva7U3F_pZ0oVFpbLkQMAXkh9J9TPEjjYkCe1HSzAt87THu2hZ5fKM9rMr4Vqf12a0Y2ACBuNPuqmPUHROuM_JRkswoW1tD8p9Q`,
+            },
+          };
+
+          axios
+            .post(uri, data, headers)
+            .then((response) => {
+              callback(false, response.data);
+            })
+            .catch((error) => {
+              callback(true, error);
+            });
+        },
+      };
+    },
+  };
+
+  window.Pusher = PusherJs;
+  window.Echo = new Echo(echoOptions);
+
   window.Echo.private("game.session.2")
 
     .listen("StartPlayEvent", (e: object) => {
@@ -23,13 +71,10 @@ onMounted(() => {
       console.log(e);
     });
 
-  desktopMediaQuery.addEventListener("change", (e) => {
-    if (e.matches) {
-      isMobile.value = false;
-    } else {
-      isMobile.value = true;
-    }
-  });
+  desktopMediaQuery.addEventListener(
+    "change",
+    (e) => (isMobile.value = e.matches)
+  );
 });
 
 const desktopMediaQuery = window.matchMedia("(min-width: 720px)");
@@ -46,7 +91,7 @@ const handleSubmit = (e: Event) => {
 </script>
 
 <template>
-  <main class="flex-1 bg-[#313131] px-8">
+  <main class="flex-1 bg-[#313131] px-4 md:px-8">
     <h1 class="text-4xl text-white uppercase font-bold italic text-center py-8">
       Virtual bingo hot! {{ startGame }}
     </h1>
@@ -131,9 +176,8 @@ const handleSubmit = (e: Event) => {
       </div>
       <div class="canvas-grid">
         <Canvas :startGame="startGame" />
-        <div>bolita</div>
+        <div class="py-5 md:py-0 text-white">bolita</div>
       </div>
-
       <Acordion title="History Balls" v-if="isMobile">
         <div class="p-5 border border-gray-200 dark:border-gray-700">
           <p>lista de bolitas</p>
@@ -143,7 +187,6 @@ const handleSubmit = (e: Event) => {
         <p>lista de bolitas</p>
       </div>
     </div>
-    <!-- <Aside /> -->
     <CardBingoList />
   </main>
 </template>

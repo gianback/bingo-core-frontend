@@ -4,7 +4,7 @@ import CardBingo from "./CardBingo.vue";
 const { cardList } = useCardsStore();
 </script>
 <template>
-  <section class="mt-16">
+  <section class="p-4 mt-4">
     <template v-if="cardList.length > 0">
       <ul class="cardList-list">
         <li v-for="(card, index) in cardList" class="cardList-item">
@@ -12,7 +12,7 @@ const { cardList } = useCardsStore();
         </li>
       </ul>
     </template>
-    <h2 v-else class="text-white text-center mt-8 text-4xl">No hay Tarjetas</h2>
+    <h2 v-else class="text-white text-center text-3xl">No hay Tarjetas</h2>
   </section>
 </template>
 <style lang="postcss">
