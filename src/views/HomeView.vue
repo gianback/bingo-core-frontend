@@ -47,10 +47,10 @@ const handleSubmit = (e: Event) => {
 
 <template>
   <main class="flex-1 bg-[#313131] px-8">
+    <h1 class="text-4xl text-white uppercase font-bold italic text-center py-8">
+      Virtual bingo hot! {{ startGame }}
+    </h1>
     <div class="home-ctn">
-      <h1 class="text-4xl text-white uppercase font-bold italic">
-        Virtual bingo hot! {{ startGame }}
-      </h1>
       <!-- <button on:click={() => (startGame = !startGame)}> change </button> -->
       <div class="order-3 md:order-none">
         <Acordion title="Leadersboard" v-if="isMobile">
