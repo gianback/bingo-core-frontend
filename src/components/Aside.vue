@@ -69,6 +69,5 @@ const handleSubmit = (e: Event) => {
     <div>
       <h2 class="text-white text-2xl">Historial:</h2>
     </div>
-    <div></div>
   </aside>
 </template>
