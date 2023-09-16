@@ -18,7 +18,7 @@ defineProps<{
     <div class="grid grid-cols-5 px-8">
       <div
         v-for="number in numbers"
-        class="bg-white font-bold text-2xl border text-center py-4 border-black divide-solid"
+        class="bg-white font-bold text-2xl border text-center py-3 border-black divide-solid"
       >
         {{ number }}
       </div>
