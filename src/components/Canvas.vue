@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, withDefaults, onUpdated, toRefs } from "vue";
+import { onMounted, onUpdated, ref, toRefs } from "vue";
 
 // const { startGame } = withDefaults(
 //   defineProps<{
@@ -16,11 +16,10 @@ const props = defineProps({
 
 const { startGame } = toRefs(props);
 
-
 const ballsInMoving = [
   { x: 250, y: 250, vx: 15, vy: -1 },
-  { x: 300, y: 300, vx: 10, vy: -12 },
-  { x: 350, y: 350, vx: 15, vy: 10 },
+  { x: 300, y: 10, vx: 10, vy: -12 },
+  { x: 350, y: 34, vx: 15, vy: 10 },
   { x: 350, y: 350, vx: 15, vy: -10 },
   { x: 350, y: 350, vx: 8, vy: 10 },
   { x: 350, y: 350, vx: 20, vy: -2 },
@@ -48,10 +47,11 @@ const frameDiameter = 350; // Diámetro del marco whiteondo
 const frameX = canvasWidth - frameDiameter - 50; // Coordenada X del marco whiteondo a la derecha, separado por 200 píxeles
 const frameY = (canvasHeight - frameDiameter) / 2; // Coordenada Y del marco whiteondo centrado verticalmente
 
-let balls = startGame.value ? ballsInMoving : staticBalls;
-
-
-
+// let balls = ref(staticBalls);
+// let balls = startGame.value ? ballsInMoving : staticBalls;
+// watch(productPrice, (current, prev) => {
+//   console.log(`watch => current: ${current} prev: ${prev}`);
+// });
 function animate() {
   const canvas = document.getElementById("canvas") as HTMLCanvasElement;
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -130,7 +130,13 @@ function animate() {
   ctx.lineTo(x + width - borderRadius, y);
 
   // Dibuja el borde superior derecho redondeado
-  ctx.arc(x + width - borderRadius, y + borderRadius, borderRadius, -Math.PI / 2, 0);
+  ctx.arc(
+    x + width - borderRadius,
+    y + borderRadius,
+    borderRadius,
+    -Math.PI / 2,
+    0
+  );
 
   // Dibuja el lado derecho del rectángulo
   ctx.lineTo(x + width, y + height - borderRadius);
@@ -160,13 +166,21 @@ function animate() {
   ctx.lineTo(x, y + borderRadius);
 
   // Dibuja el borde superior izquierdo redondeado y cierra el camino
-  ctx.arc(x + borderRadius, y + borderRadius, borderRadius, Math.PI, -Math.PI / 2);
+  ctx.arc(
+    x + borderRadius,
+    y + borderRadius,
+    borderRadius,
+    Math.PI,
+    -Math.PI / 2
+  );
   ctx.closePath();
 
   ctx.fillStyle = "white"; // Color de relleno
   ctx.fill(); // Rellena el rectángulo
 
   // Mueve y dibuja las bolitas dentro del marco redondo
+  let balls = startGame.value ? ballsInMoving : staticBalls;
+
   balls.forEach((ball) => {
     ball.x += ball.vx;
     ball.y += ball.vy;
@@ -174,7 +188,7 @@ function animate() {
     // Detecta colisiones con los bordes del marco redondo
     const distance = Math.sqrt(
       Math.pow(ball.x - (frameX + frameDiameter / 2), 2) +
-      Math.pow(ball.y - (frameY + frameDiameter / 2), 2)
+        Math.pow(ball.y - (frameY + frameDiameter / 2), 2)
     );
     if (distance + 20 > frameDiameter / 2) {
       // Colisión con el borde del marco whiteondo
@@ -182,8 +196,10 @@ function animate() {
         ball.y - (frameY + frameDiameter / 2),
         ball.x - (frameX + frameDiameter / 2)
       );
-      ball.x = frameX + frameDiameter / 2 + (frameDiameter / 2 - 20) * Math.cos(angle);
-      ball.y = frameY + frameDiameter / 2 + (frameDiameter / 2 - 20) * Math.sin(angle);
+      ball.x =
+        frameX + frameDiameter / 2 + (frameDiameter / 2 - 20) * Math.cos(angle);
+      ball.y =
+        frameY + frameDiameter / 2 + (frameDiameter / 2 - 20) * Math.sin(angle);
       ball.vx = -ball.vx;
       ball.vy = -ball.vy;
     }
@@ -211,14 +227,19 @@ onMounted(() => {
 });
 
 onUpdated(() => {
-  if (startGame.value) animate();
-})
-
-
+  if (startGame.value) {
+    animate();
+  }
+});
 </script>
 
 <template>
-  <canvas id="canvas" class="mx-auto max-w-[800px] w-full" :width="canvasWidth" :height="canvasHeight" />
+  <canvas
+    id="canvas"
+    class="mx-auto max-w-[800px] w-full"
+    :width="canvasWidth"
+    :height="canvasHeight"
+  />
 
   <h1>{{ startGame }}</h1>
 </template>
