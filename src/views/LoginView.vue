@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import { loginService } from "../services/login.service";
 import { userStore, Login } from "../store/userStore";
 
-const { setUser } = userStore();
+const store = userStore();
+const { push } = useRouter();
 
 const handleSubmit = async (e: Event) => {
   e.preventDefault();
@@ -12,8 +14,17 @@ const handleSubmit = async (e: Event) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  const session = (await loginService(email, password)) as Login;
-  setUser(session.data);
+  try {
+    const session = (await loginService(email, password)) as Login;
+    store.setUser(session.data);
+    store.setIsAuth(true);
+
+    if ((session.type = "success")) {
+      push("/");
+    }
+  } catch (error: any) {
+    throw new Error(error);
+  }
 };
 </script>
 
