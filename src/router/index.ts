@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import Layout from "../Layout.vue";
+import { userStore } from "../store/userStore";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +41,24 @@ const router = createRouter({
       component: () => import("../views/RegisterView.vue"),
     },
   ],
+});
+
+router.beforeEach((to, _from, next) => {
+  const { isAuth } = userStore();
+  console.log({ isAuth });
+  if (to.name === "login" || to.name === "register") {
+    if (isAuth) {
+      next("/");
+    } else {
+      next();
+    }
+  } else {
+    if (isAuth) {
+      next();
+    } else {
+      next("/login");
+    }
+  }
 });
 
 export default router;
