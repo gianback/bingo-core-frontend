@@ -21,10 +21,14 @@ export const userStore = defineStore("user", () => {
     name: "",
     token: "",
   });
+  let isAuth = ref(false);
 
   const setUser = (newUser: UserData) => {
     user.value = newUser;
   };
+  const setIsAuth = (status: boolean) => {
+    isAuth.value = status;
+  };
 
-  return { user, setUser };
+  return { user, setUser, isAuth, setIsAuth };
 });
