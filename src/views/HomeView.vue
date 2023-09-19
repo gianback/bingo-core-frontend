@@ -1,11 +1,11 @@
 <template>
   <section class="flex-1 bg-gray-900">
-    <section class="bg-white dark:bg-gray-900">
+    <div class="bg-white dark:bg-gray-900">
       <div
         class="py-8 px-4 mx-auto max-w-screen-md text-center lg:py-16 lg:px-12"
       >
         <h1
-          class="mb-4 text-4xl font-bold tracking-tight leading-none text-gray-900 lg:mb-6 md:text-5xl xl:text-6xl dark:text-white"
+          class="mb-4 text-3xl font-bold tracking-tight leading-none text-gray-900 lg:mb-6 md:text-5xl xl:text-6xl dark:text-white"
         >
           Virtual Bingo Hot
         </h1>
@@ -15,19 +15,19 @@
           Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </p>
       </div>
-    </section>
-    <section class="bg-white dark:bg-gray-900">
+    </div>
+    <div class="bg-white dark:bg-gray-900">
       <div
-        class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12"
+        class="grid max-w-screen-xl p-4 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12"
       >
         <div class="mr-auto place-self-center lg:col-span-7">
-          <h1
-            class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white"
+          <h2
+            class="max-w-2xl mb-4 text-2xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white"
           >
             Lorem ipsum dolor sit amet.
-          </h1>
+          </h2>
           <p
-            class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400"
+            class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 text-md md:text-lg lg:text-xl dark:text-gray-400"
           >
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
             nostrum itaque harum fuga soluta eius cupiditate doloremque quidem
@@ -53,13 +53,13 @@
             </svg>
           </router-link>
         </div>
-        <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
+        <div class="-order-1 md:order-1 mb-4 lg:mt-0 lg:col-span-5 lg:flex">
           <img
             src="https://smartcasinoguide.com/app/uploads/2018/02/Bingo-game_cards-and-balls_600x424.png"
             alt="mockup"
           />
         </div>
       </div>
-    </section>
+    </div>
   </section>
 </template>

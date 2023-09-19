@@ -138,7 +138,7 @@ const handleSubmit = (e: Event) => {
           </div>
         </Acordion>
         <div v-else>
-          <div class="grid grid-cols-2">
+          <div class="grid grid-cols-2 gap-3 mb-3">
             <button
               class="inline-block p-3 rounded-t-lg bg-gray-800 text-gray-300 hover:text-white"
             >
