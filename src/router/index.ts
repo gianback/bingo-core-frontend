@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import Layout from "../Layout.vue";
 import { userStore } from "../store/userStore";
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -14,18 +13,14 @@ const router = createRouter({
         {
           path: "",
           name: "home",
-          // route level code-splitting
-          // this generates a separate chunk (About.[hash].js) for this route
-          // which is lazy-loaded when the route is visited.
           component: HomeView,
+          meta: { requireIsAuth: true },
         },
         {
           path: "/play-game",
           name: "play-game",
-          // route level code-splitting
-          // this generates a separate chunk (About.[hash].js) for this route
-          // which is lazy-loaded when the route is visited.
           component: () => import("../views/PlayGameView.vue"),
+          meta: { requireIsAuth: true },
         },
       ],
     },
@@ -43,22 +38,13 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach((to) => {
   const { isAuth } = userStore();
-  console.log({ isAuth });
-  if (to.name === "login" || to.name === "register") {
-    if (isAuth) {
-      next("/");
-    } else {
-      next();
-    }
-  } else {
-    if (isAuth) {
-      next();
-    } else {
-      next("/login");
-    }
+
+  if (to.meta.requireIsAuth && !isAuth) {
+    return "/login";
+  } else if (!to.meta.requireIsAuth && isAuth) {
+    return "/";
   }
 });
-
 export default router;
