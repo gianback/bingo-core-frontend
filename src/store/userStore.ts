@@ -21,13 +21,16 @@ export const userStore = defineStore("user", () => {
     name: "",
     token: "",
   });
-  let isAuth = ref(false);
+  let isAuth = ref(
+    !!JSON.parse(localStorage.getItem("isAuth") as string) || false
+  );
 
   const setUser = (newUser: UserData) => {
     user.value = newUser;
   };
   const setIsAuth = (status: boolean) => {
     isAuth.value = status;
+    localStorage.setItem("isAuth", JSON.stringify(status));
   };
 
   return { user, setUser, isAuth, setIsAuth };
