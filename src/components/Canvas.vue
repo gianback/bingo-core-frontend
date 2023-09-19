@@ -241,5 +241,5 @@ onUpdated(() => {
     :height="canvasHeight"
   />
 
-  <h1>{{ startGame }}</h1>
+  <!-- <h1>{{ startGame }}</h1> -->
 </template>
