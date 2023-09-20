@@ -1,3 +1,8 @@
+<script lang="ts" setup>
+import { userStore } from "../store/userStore";
+
+const { user } = userStore();
+</script>
 <template>
   <section class="flex-1 bg-gray-900">
     <div class="bg-white dark:bg-gray-900">
@@ -7,7 +12,7 @@
         <h1
           class="mb-4 text-3xl font-bold tracking-tight leading-none text-gray-900 lg:mb-6 md:text-5xl xl:text-6xl dark:text-white"
         >
-          Virtual Bingo Hot
+          Virtual Bingo Hot {{ user.name }}
         </h1>
         <p
           class="font-light text-gray-500 md:text-lg xl:text-xl dark:text-gray-400"
@@ -18,7 +23,7 @@
     </div>
     <div class="bg-white dark:bg-gray-900">
       <div
-        class="grid max-w-screen-xl p-4 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12"
+        class="grid justify-center max-w-screen-xl p-4 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12"
       >
         <div class="mr-auto place-self-center lg:col-span-7">
           <h2

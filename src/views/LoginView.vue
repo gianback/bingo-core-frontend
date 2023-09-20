@@ -4,6 +4,7 @@ import { loginService } from "../services/login.service";
 import { userStore, Login } from "../store/userStore";
 import Loader from "../components/Loader.vue";
 import { ref } from "vue";
+import { setCookie } from "../utils/cookies";
 
 const store = userStore();
 const isLoading = ref(false);
@@ -20,8 +21,12 @@ const handleSubmit = async (e: Event) => {
   try {
     isLoading.value = true;
     const session = (await loginService(email, password)) as Login;
-    store.setUser(session.data);
+    const { id, name, token } = session.data;
+
+    store.setUser({ id, name });
     store.setIsAuth(true);
+
+    setCookie("token", token);
     if ((session.type = "success")) {
       push("/");
     }
