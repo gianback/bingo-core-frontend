@@ -32,7 +32,7 @@ onMounted(() => {
       return {
         authorize: (socketId: any, callback: any) => {
           const token = getCookie("token") as string;
-          const uri = "http://bingo-core-backend.test/api/broadcasting/auth";
+          const uri = `${import.meta.env.VITE_URL_BACKEND}/broadcasting/auth`;
 
           const data = {
             socket_id: socketId,
