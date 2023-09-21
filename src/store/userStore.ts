@@ -13,10 +13,10 @@ export const userStore = defineStore("user", () => {
     JSON.parse(localStorage.getItem("user") as string) || {
       id: 0,
       name: "",
-    }
+    },
   );
   let isAuth = ref(
-    !!JSON.parse(localStorage.getItem("isAuth") as string) || false
+    !!JSON.parse(localStorage.getItem("isAuth") as string) || false,
   );
 
   const setUser = (newUser: userStore) => {

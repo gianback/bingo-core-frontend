@@ -32,7 +32,7 @@ export const registerService = async ({
         password_confirmation,
         surname,
       }),
-    }
+    },
   );
 
   const data = (await resp.json()) as APIResponse<any>;

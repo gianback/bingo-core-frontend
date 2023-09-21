@@ -7,14 +7,14 @@ const route = useRoute();
 const { push } = useRouter();
 const { setIsAuth, setUser } = userStore();
 const bgHeader = ref<string>(
-  route.path === "/" ? "bg-gray-900" : "bg-[#313131]"
+  route.path === "/" ? "bg-gray-900" : "bg-[#313131]",
 );
 
 watch(
   () => route.path,
   (newPath) => {
     bgHeader.value = newPath === "/" ? "bg-gray-900" : "bg-[#313131]";
-  }
+  },
 );
 
 const handleClick = () => {

@@ -14,7 +14,7 @@ import { useCardsStore } from "../store/cardsStore";
 let startGame = ref<boolean>(false);
 let isMobile = ref<boolean>(window.innerWidth < 768);
 
-const router = useRoute();
+const route = useRoute();
 
 // const { addCardsToCreate } = useCardsStore();
 onMounted(() => {
@@ -62,7 +62,7 @@ onMounted(() => {
     },
   };
 
-  const gameId = router.params.id;
+  const gameId = route.params.id;
 
   window.Pusher = PusherJs;
   window.Echo = new Echo(echoOptions);
@@ -105,10 +105,9 @@ onMounted(() => {
 
   desktopMediaQuery.addEventListener(
     "change",
-    (e) => (isMobile.value = e.matches)
+    (e) => (isMobile.value = e.matches),
   );
 });
-const route = useRoute();
 const { addCardToList } = useCardsStore();
 
 const desktopMediaQuery = window.matchMedia("(min-width: 720px)");

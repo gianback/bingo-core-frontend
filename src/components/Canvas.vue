@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUpdated, ref, toRefs } from "vue";
+import { onMounted, onUpdated, toRefs } from "vue";
 
 // const { startGame } = withDefaults(
 //   defineProps<{
@@ -67,7 +67,7 @@ function animate() {
     frameY + frameDiameter / 2,
     frameDiameter / 2,
     0,
-    Math.PI * 2
+    Math.PI * 2,
   );
   ctx.stroke();
 
@@ -135,7 +135,7 @@ function animate() {
     y + borderRadius,
     borderRadius,
     -Math.PI / 2,
-    0
+    0,
   );
 
   // Dibuja el lado derecho del rectángulo
@@ -147,7 +147,7 @@ function animate() {
     y + height - borderRadius,
     borderRadius,
     0,
-    Math.PI / 2
+    Math.PI / 2,
   );
 
   // Dibuja la parte inferior del rectángulo
@@ -159,7 +159,7 @@ function animate() {
     y + height - borderRadius,
     borderRadius,
     Math.PI / 2,
-    Math.PI
+    Math.PI,
   );
 
   // Dibuja el lado izquierdo del rectángulo
@@ -171,7 +171,7 @@ function animate() {
     y + borderRadius,
     borderRadius,
     Math.PI,
-    -Math.PI / 2
+    -Math.PI / 2,
   );
   ctx.closePath();
 
@@ -188,13 +188,13 @@ function animate() {
     // Detecta colisiones con los bordes del marco redondo
     const distance = Math.sqrt(
       Math.pow(ball.x - (frameX + frameDiameter / 2), 2) +
-        Math.pow(ball.y - (frameY + frameDiameter / 2), 2)
+        Math.pow(ball.y - (frameY + frameDiameter / 2), 2),
     );
     if (distance + 20 > frameDiameter / 2) {
       // Colisión con el borde del marco whiteondo
       const angle = Math.atan2(
         ball.y - (frameY + frameDiameter / 2),
-        ball.x - (frameX + frameDiameter / 2)
+        ball.x - (frameX + frameDiameter / 2),
       );
       ball.x =
         frameX + frameDiameter / 2 + (frameDiameter / 2 - 20) * Math.cos(angle);

@@ -15,7 +15,7 @@ export const getCookie = (name: string) => {
       endIndex = cookie.length;
     }
     value = decodeURIComponent(
-      cookie.substring(startIndex + name.length + 1, endIndex)
+      cookie.substring(startIndex + name.length + 1, endIndex),
     );
   }
   return value;

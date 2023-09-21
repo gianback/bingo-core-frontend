@@ -23,7 +23,7 @@ const handleSubmit = async (e: Event) => {
     isLoading.value = true;
     const session = (await loginService(
       email,
-      password
+      password,
     )) as APIResponse<UserData>;
     console.log({ session });
     const { id, name, token } = session.data;

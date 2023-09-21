@@ -4,7 +4,7 @@ import { BingoCard } from "../services/card.service";
 
 export const useCardsStore = defineStore("cards", () => {
   const cardList = ref<BingoCard[]>(
-    JSON.parse(localStorage.getItem("cards") as string) || []
+    JSON.parse(localStorage.getItem("cards") as string) || [],
   );
 
   const addCardToList = (card: BingoCard) => {
