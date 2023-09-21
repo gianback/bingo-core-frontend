@@ -46,7 +46,7 @@ const handleSubmit = async (e: Event) => {
 <template>
   <div class="bg-gray-50 dark:bg-gray-900">
     <div
-      class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
+      class="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0"
     >
       <div
         class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
@@ -89,7 +89,7 @@ const handleSubmit = async (e: Event) => {
             <div class="relative">
               <button
                 type="submit"
-                class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                class="w-full text-white bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
               >
                 Sign in
               </button>
@@ -103,7 +103,7 @@ const handleSubmit = async (e: Event) => {
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
               Don’t have an account yet?
               <router-link
-                class="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                class="font-medium text-gray-600 hover:underline dark:text-gray-500"
                 to="/register"
                 >Sign up</router-link
               >
