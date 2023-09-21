@@ -13,6 +13,9 @@ import { useCardsStore } from "../store/cardsStore";
 
 let startGame = ref<boolean>(false);
 let isMobile = ref<boolean>(window.innerWidth < 768);
+
+const router = useRoute();
+
 // const { addCardsToCreate } = useCardsStore();
 onMounted(() => {
   const echoOptions = {
@@ -59,10 +62,12 @@ onMounted(() => {
     },
   };
 
+  const gameId = router.params.id;
+
   window.Pusher = PusherJs;
   window.Echo = new Echo(echoOptions);
 
-  window.Echo.private("game.session.63")
+  window.Echo.private(`game.session.${gameId}`)
 
     .listen("StartPlayEvent", (e: object) => {
       console.log({ e });
