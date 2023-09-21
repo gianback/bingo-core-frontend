@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { ref, watch } from "vue";
+import { userStore } from "../store/userStore";
 
 const route = useRoute();
+const { push } = useRouter();
+const { setIsAuth, setUser } = userStore();
 const bgHeader = ref<string>(
   route.path === "/" ? "bg-gray-900" : "bg-[#313131]"
 );
@@ -13,6 +16,15 @@ watch(
     bgHeader.value = newPath === "/" ? "bg-gray-900" : "bg-[#313131]";
   }
 );
+
+const handleClick = () => {
+  setUser({
+    id: 0,
+    name: "",
+  });
+  setIsAuth(false);
+  push("/login");
+};
 </script>
 
 <template>
@@ -21,9 +33,10 @@ watch(
       <li>
         <router-link to="/">Home</router-link>
       </li>
-      <li>
+      <!-- <li>
         <router-link to="/play-game">Play</router-link>
-      </li>
+      </li> -->
+      <button @click="handleClick">logout</button>
     </ul>
   </header>
 </template>

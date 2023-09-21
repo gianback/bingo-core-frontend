@@ -1,20 +1,13 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-export interface Login {
-  data: UserData;
-  message: string;
-  type: string;
-  http_code: number;
-  errors: any[];
-}
-
-interface UserData {
+export interface UserData {
   id: number;
   name: string;
   token: string;
 }
 type userStore = Pick<UserData, "id" | "name">;
+
 export const userStore = defineStore("user", () => {
   const user = ref<userStore>(
     JSON.parse(localStorage.getItem("user") as string) || {

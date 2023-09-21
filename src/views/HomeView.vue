@@ -1,7 +1,16 @@
 <script lang="ts" setup>
+import { useRouter } from "vue-router";
 import { userStore } from "../store/userStore";
+import { baseApi } from "../utils/axios";
 
 const { user } = userStore();
+const { push } = useRouter();
+
+const handleStartGame = async () => {
+  const res = await baseApi.get("/games/join-game");
+  console.log(res.data.game.id);
+  push(`/play-game/${res.data.game.id}`);
+};
 </script>
 <template>
   <section class="flex-1 bg-gray-900">
@@ -39,9 +48,10 @@ const { user } = userStore();
             laborum fugiat.
           </p>
 
-          <router-link
-            to="/play-game"
+          <!-- to="/play-game" -->
+          <button
             class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+            :onclick="handleStartGame"
           >
             Start Game
             <svg
@@ -56,7 +66,7 @@ const { user } = userStore();
                 clip-rule="evenodd"
               ></path>
             </svg>
-          </router-link>
+          </button>
         </div>
         <div class="-order-1 md:order-1 mb-4 lg:mt-0 lg:col-span-5 lg:flex">
           <img

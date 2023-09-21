@@ -6,11 +6,14 @@ import PusherJs from "pusher-js";
 import Canvas from "../components/Canvas.vue";
 import CardBingoList from "../components/CardBingoList.vue";
 import Acordion from "../components/Acordion.vue";
+import { getCookie } from "../utils/cookies";
+import { useRoute } from "vue-router";
+import { getCards } from "../services/card.service";
 import { useCardsStore } from "../store/cardsStore";
 
 let startGame = ref<boolean>(false);
 let isMobile = ref<boolean>(window.innerWidth < 768);
-const { addCardsToCreate } = useCardsStore();
+// const { addCardsToCreate } = useCardsStore();
 onMounted(() => {
   const echoOptions = {
     broadcaster: "pusher",
@@ -28,6 +31,7 @@ onMounted(() => {
     authorizer: (channel: any, _options: any) => {
       return {
         authorize: (socketId: any, callback: any) => {
+          const token = getCookie("token") as string;
           const uri = "http://bingo-core-backend.test/api/broadcasting/auth";
 
           const data = {
@@ -38,7 +42,7 @@ onMounted(() => {
             headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
-              Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiODA0ZGI0ZjZiZTYzNDIxOTJlMDgyNGFmMDVmNTcwZmYwMWFkNjNiMzdlMGJmMjVlN2I2NDk1YjcxZTE3YmViNDY5N2Q2ZGQ2NTllMWQ5ZTQiLCJpYXQiOjE2OTQ5NzQ1MDMuMzg0MzIxLCJuYmYiOjE2OTQ5NzQ1MDMuMzg0MzI0LCJleHAiOjE3MjY1OTY5MDMuMzYyNDYyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.w2MqQ2lN7KHY7eZpIBM-0J1oObgrXzYNmOk2PHCeURNR6pODgAZcX_xvPfbgssYfNFdoj7x3mcEXCTPfo3SZ6Goxz1ce8eFQNzOKhFG3au5azYGgZx1K_f-xnZxabx5gc46oCSG_0n5gjIZRcpT_xvWrR8zoGIsw8EXaQw_x0d7dk11mCw4Bh7ZawnEa-zTzU2mBzGrmoDHapr6CdSkxrCOkS40PBP0ByN5zLNyJUbHux63XYXtwU28ID2L0qq1NxTffBFvIzdvg_BAv28P1Ra1y9SbEWE8XuzWAnWlloey-dLCdCWc4HOIQV2D7QSi3DkrvUQrfTV40cj2Q8581K9GoyKiP-ewIMUSRcQ-DjPA1DDvtsBxak5b7hna8W6rWYV7MIaTpQJywyBWfIsxadQsFWujS49oaK9potr7fqAtLY_5uh5wOcdvOIPQ1rmgpdb996PGS5_upXKpPJSOQjt1N-s01aMEPZHKDaprSOpRyayQ78KrAV5n_cr5gq3qNoiFmeGETYVAjvsaId8qqoISWK6YipcjY6vURGOsEcHglAM9GYgd9LhkTRlTYInE6PFb8kqTvbVduVmNeb2iBKrddbvyWz7NqFDh4TIxAWw8EyG22FzUmUrYZRoZY_k8qsmMdrU16bG9353iwJLcFKXlo-1oyy7He1GeAVFkxtgc`,
+              Authorization: `Bearer ${token}`,
             },
           };
 
@@ -58,16 +62,39 @@ onMounted(() => {
   window.Pusher = PusherJs;
   window.Echo = new Echo(echoOptions);
 
-  window.Echo.private("game.session.2")
+  window.Echo.private("game.session.63")
 
     .listen("StartPlayEvent", (e: object) => {
       console.log({ e });
 
-      startGame.value = true;
-
       alert("iniciando juego desde el evento StartPlayEvent");
     })
-    .listen("ReportStatusToFrontEndEvent", (e: string) => {
+    .listen("ReportStatusToFrontEndEvent", (e: any) => {
+      const status = e["new-status"] as string;
+
+      switch (status) {
+        case "getting_next_ball":
+          alert("iniciando juego desde el evento ReportStatusToFrontEndEvent");
+          startGame.value = true;
+          break;
+        case "picked-ball":
+          alert("nueva bola obtenida");
+
+          const newNumberBall = e.data.number as number;
+
+          alert(`nueva bola obtenida: ${newNumberBall}`);
+          startGame.value = false;
+          break;
+        case "evaluating_bingo_cards":
+          alert("evaluando numero en bingo cards");
+          console.log(e);
+          break;
+
+        default:
+          alert("juego terminado");
+          break;
+      }
+
       console.log(e);
     });
 
@@ -76,17 +103,24 @@ onMounted(() => {
     (e) => (isMobile.value = e.matches)
   );
 });
+const route = useRoute();
+const { addCardToList } = useCardsStore();
 
 const desktopMediaQuery = window.matchMedia("(min-width: 720px)");
 
-const handleSubmit = (e: Event) => {
+const handleSubmit = async (e: Event) => {
   e.preventDefault();
   const form = e.currentTarget as HTMLFormElement;
   const formData = new FormData(form);
 
+  // console.log(route);
   const cardNumbers = formData.get("card-number") as string;
+  const cards = await getCards(+cardNumbers, route.params.id as string);
+  cards["bingo-cards"].forEach((card) => {
+    addCardToList(card);
+  });
 
-  addCardsToCreate(+cardNumbers);
+  // console.log(cards["bingo-cards"]);
 };
 </script>
 

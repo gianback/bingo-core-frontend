@@ -1,19 +1,15 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { getRandomNumbers } from "../utils/getRandomNumbers";
+import { BingoCard } from "../services/card.service";
 
 export const useCardsStore = defineStore("cards", () => {
-  const cardList = ref<number[][]>([]);
-  const historyNumbers = ref<number[]>([]);
+  const cardList = ref<BingoCard[]>(
+    JSON.parse(localStorage.getItem("cards") as string) || []
+  );
 
-  const addCardsToCreate = (newNumber: number) => {
-    for (let i = 0; i < newNumber; i++) {
-      const newNumberList = getRandomNumbers();
-      cardList.value.push(newNumberList);
-    }
+  const addCardToList = (card: BingoCard) => {
+    cardList.value.push(card);
   };
-  const addHistoryNumber = (newNumber: number) => {
-    historyNumbers.value.push(newNumber);
-  };
-  return { cardList, addCardsToCreate, addHistoryNumber };
+
+  return { cardList, addCardToList };
 });

@@ -18,9 +18,16 @@ const router = createRouter({
         },
         {
           path: "/play-game",
-          name: "play-game",
-          component: () => import("../views/PlayGameView.vue"),
+          name: "play-game by id",
           meta: { requireIsAuth: true },
+          children: [
+            {
+              path: "/play-game/:id",
+              name: "play-game by id",
+              component: () => import("../views/PlayGameView.vue"),
+              meta: { requireIsAuth: true },
+            },
+          ],
         },
       ],
     },

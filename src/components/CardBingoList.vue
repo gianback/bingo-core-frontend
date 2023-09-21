@@ -7,8 +7,8 @@ const { cardList } = useCardsStore();
   <section class="p-4 mt-4">
     <template v-if="cardList.length > 0">
       <ul class="cardList-list">
-        <li v-for="(card, index) in cardList" class="cardList-item">
-          <CardBingo :key="index" :numbers="card" />
+        <li v-for="card in cardList" class="cardList-item">
+          <CardBingo :key="card.bingo_card_id" :numbers="card.data" />
         </li>
       </ul>
     </template>

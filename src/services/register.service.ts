@@ -1,10 +1,4 @@
-export interface Response {
-  data: any[];
-  message: string;
-  type: string;
-  http_code: number;
-  errors: any[];
-}
+import { APIResponse } from "../interfaces/api";
 
 interface Props {
   email: string;
@@ -24,7 +18,7 @@ export const registerService = async ({
   surname,
 }: Props) => {
   const resp = await fetch(
-    `${import.meta.env.VITE_URL_BACKEND}/api/auth/register`,
+    `${import.meta.env.VITE_URL_BACKEND}/auth/register`,
     {
       method: "POST",
       headers: {
@@ -41,7 +35,7 @@ export const registerService = async ({
     }
   );
 
-  const data = (await resp.json()) as Response;
+  const data = (await resp.json()) as APIResponse<any>;
 
   return !!data.type;
 };
