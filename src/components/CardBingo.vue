@@ -6,13 +6,6 @@ const { numbers } = defineProps<{
 }>();
 
 const shadowCards = Array(5).fill(Array(5).fill(0));
-console.log({ shadowCards });
-
-// let [first, second, third, fourth, fifth] = numbers;
-// const firstHalf = third.slice(0, 2);
-// const secondHalf = third.slice(2, 4);
-// third = [...firstHalf, 5000, ...secondHalf];
-// const newCard = [first, second, third, fourth, fifth];
 </script>
 
 <template>
@@ -27,14 +20,20 @@ console.log({ shadowCards });
     <div class="grid grid-cols-5 px-8">
       <div
         v-for="(number, index1) in numbers"
-        class="bg-white font-bold text-2xl border text-center py-3 border-black divide-solid"
+        :key="index1"
+        class="bg-white font-bold text-2xl text-center border-black divide-solid border-t-[1px] last:border-r-[1px]"
       >
-        <template v-for="(n, index2) in number" class="text-center">
-          <div v-if="n === null" class="icon flex items-center">
-            <img :src="freeSpace" alt="" />
+        <template v-for="(n, index2) in number" :key="index2">
+          <div
+            v-if="n === null"
+            class="icon flex items-center h-[49px] p-2 w-full border-black divide-solid border-l-[1px] border-b-[1px]"
+          >
+            <img :src="freeSpace" class="w-full h-full" alt="" />
           </div>
           <div
-            :class="`${shadowCards[index1][index2] === 1 ? 'bg-red-500' : ''}`"
+            :class="`${
+              shadowCards[index1][index2] === 1 ? 'bg-red-500' : ''
+            } p-2 border-black divide-solid border-l-[1px] border-b-[1px]`"
             v-else
           >
             {{ n }}

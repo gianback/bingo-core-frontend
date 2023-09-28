@@ -1,5 +1,5 @@
 export const setCookie = (name: string, value: any) => {
-  let cookieText = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+  const cookieText = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
   document.cookie = cookieText;
 };
 

@@ -1,15 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUpdated, toRefs } from "vue";
 
-// const { startGame } = withDefaults(
-//   defineProps<{
-//     startGame?: boolean;
-//   }>(),
-//   {
-//     startGame: false, // Valor por defecto si no se proporciona la prop
-//   }
-// );
-
 const props = defineProps({
   startGame: Boolean,
 });
@@ -46,12 +37,8 @@ const canvasHeight = 450;
 const frameDiameter = 350; // Diámetro del marco whiteondo
 const frameX = canvasWidth - frameDiameter - 50; // Coordenada X del marco whiteondo a la derecha, separado por 200 píxeles
 const frameY = (canvasHeight - frameDiameter) / 2; // Coordenada Y del marco whiteondo centrado verticalmente
+let balls = startGame.value ? ballsInMoving : staticBalls;
 
-// let balls = ref(staticBalls);
-// let balls = startGame.value ? ballsInMoving : staticBalls;
-// watch(productPrice, (current, prev) => {
-//   console.log(`watch => current: ${current} prev: ${prev}`);
-// });
 function animate() {
   const canvas = document.getElementById("canvas") as HTMLCanvasElement;
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -179,7 +166,6 @@ function animate() {
   ctx.fill(); // Rellena el rectángulo
 
   // Mueve y dibuja las bolitas dentro del marco redondo
-  let balls = startGame.value ? ballsInMoving : staticBalls;
 
   balls.forEach((ball) => {
     ball.x += ball.vx;
@@ -221,14 +207,17 @@ function animate() {
 
 onMounted(() => {
   // Función para animar las bolitas
-
   // Inicia la animación
+
   animate();
 });
 
 onUpdated(() => {
   if (startGame.value) {
+    balls = ballsInMoving;
     animate();
+  } else {
+    balls = staticBalls;
   }
 });
 </script>
@@ -240,6 +229,4 @@ onUpdated(() => {
     :width="canvasWidth"
     :height="canvasHeight"
   />
-
-  <!-- <h1>{{ startGame }}</h1> -->
 </template>

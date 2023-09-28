@@ -25,7 +25,6 @@ const handleSubmit = async (e: Event) => {
       email,
       password,
     )) as APIResponse<UserData>;
-    console.log({ session });
     const { id, name, token } = session.data;
 
     store.setUser({ id, name });

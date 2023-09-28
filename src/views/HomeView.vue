@@ -8,7 +8,7 @@ const { push } = useRouter();
 
 const handleStartGame = async () => {
   const res = await baseApi.get("/games/join-game");
-  console.log(res.data.game.id);
+  // console.log(res.data.game.id);
   push(`/play-game/${res.data.game.id}`);
 };
 </script>

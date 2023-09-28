@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { Toaster, toast } from "vue-sonner";
 import axios from "axios";
 import Echo from "laravel-echo";
 import PusherJs from "pusher-js";
@@ -12,11 +13,10 @@ import { getCards } from "../services/card.service";
 import { useCardsStore } from "../store/cardsStore";
 
 let startGame = ref<boolean>(false);
+let pastNumbers = ref<number[]>([]);
 let isMobile = ref<boolean>(window.innerWidth < 768);
 
 const route = useRoute();
-
-// const { addCardsToCreate } = useCardsStore();
 onMounted(() => {
   const echoOptions = {
     broadcaster: "pusher",
@@ -61,7 +61,6 @@ onMounted(() => {
       };
     },
   };
-
   const gameId = route.params.id;
 
   window.Pusher = PusherJs;
@@ -72,31 +71,38 @@ onMounted(() => {
     .listen("StartPlayEvent", (e: object) => {
       console.log({ e });
 
-      alert("iniciando juego desde el evento StartPlayEvent");
+      // alert("iniciando juego desde el evento StartPlayEvent");
     })
     .listen("ReportStatusToFrontEndEvent", (e: any) => {
       const status = e["new-status"] as string;
+      let newNumberBall: number;
+      // console.log({ status });
+      // console.log("ReportStatusToFrontEndEvent");
 
       switch (status) {
         case "getting_next_ball":
-          alert("iniciando juego desde el evento ReportStatusToFrontEndEvent");
           startGame.value = true;
+          // alert("iniciando juego desde el evento ReportStatusToFrontEndEvent");
+
+          console.log("getting_next_ball");
+
           break;
         case "picked-ball":
-          alert("nueva bola obtenida");
+          // alert("nueva bola obtenida");
 
-          const newNumberBall = e.data.number as number;
+          newNumberBall = +e.data.number as number;
+          pastNumbers.value.push(newNumberBall);
+          // alert(`nueva bola obtenida: ${newNumberBall}`);
 
-          alert(`nueva bola obtenida: ${newNumberBall}`);
           startGame.value = false;
           break;
         case "evaluating_bingo_cards":
-          alert("evaluando numero en bingo cards");
+          // alert("evaluando numero en bingo cards");
           console.log(e);
           break;
 
         default:
-          alert("juego terminado");
+          // alert("juego terminado");
           break;
       }
 
@@ -105,10 +111,10 @@ onMounted(() => {
 
   desktopMediaQuery.addEventListener(
     "change",
-    (e) => (isMobile.value = e.matches),
+    (e) => (isMobile.value = !e.matches),
   );
 });
-const { addCardToList } = useCardsStore();
+const { addCardToList, cardList } = useCardsStore();
 
 const desktopMediaQuery = window.matchMedia("(min-width: 720px)");
 
@@ -117,18 +123,22 @@ const handleSubmit = async (e: Event) => {
   const form = e.currentTarget as HTMLFormElement;
   const formData = new FormData(form);
 
-  // console.log(route);
   const cardNumbers = formData.get("card-number") as string;
   const cards = await getCards(+cardNumbers, route.params.id as string);
   cards["bingo-cards"].forEach((card) => {
     addCardToList(card);
   });
+};
 
-  // console.log(cards["bingo-cards"]);
+const onStartGame = () => {
+  if (cardList.length === 0) {
+    toast.error("Necesitas Adquirir tarjetas para poder jugar");
+  }
 };
 </script>
 
 <template>
+  <Toaster richColors />
   <main class="flex-1 bg-[#313131] px-4 md:px-8">
     <h1 class="text-4xl text-white uppercase font-bold italic text-center py-8">
       Virtual bingo hot! {{ startGame }}
@@ -171,6 +181,12 @@ const handleSubmit = async (e: Event) => {
               Agregar
             </button>
           </form>
+          <button
+            @click="onStartGame"
+            class="mt-2 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+          >
+            Iniciar Juego
+          </button>
           <div>
             <h2 class="text-white text-2xl">Historial:</h2>
           </div>
@@ -203,13 +219,21 @@ const handleSubmit = async (e: Event) => {
                 name="card-number"
               />
             </div>
-            <button
-              type="submit"
-              class="mt-2 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            >
-              Agregar
-            </button>
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="mt-2 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              >
+                Agregar Tarjetas
+              </button>
+            </div>
           </form>
+          <button
+            @click="onStartGame"
+            class="mt-2 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+          >
+            Iniciar Juego
+          </button>
         </div>
       </div>
       <div class="canvas-grid">
@@ -222,7 +246,15 @@ const handleSubmit = async (e: Event) => {
         </div>
       </Acordion>
       <div v-else class="p-5 border border-gray-200 dark:border-gray-700">
-        <p>lista de bolitas</p>
+        <div class="grid grid-cols-5 gap-3">
+          <div
+            v-for="(number, index) in pastNumbers"
+            :key="index"
+            class="rounded-full bg-red-300 text-black flex items-center justify-center w-10 h-10 text-lg"
+          >
+            {{ number }}
+          </div>
+        </div>
       </div>
     </div>
     <CardBingoList />

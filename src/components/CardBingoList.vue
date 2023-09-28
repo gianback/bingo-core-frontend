@@ -7,8 +7,12 @@ const { cardList } = useCardsStore();
   <section class="p-4 mt-4">
     <template v-if="cardList.length > 0">
       <ul class="cardList-list">
-        <li v-for="card in cardList" class="cardList-item">
-          <CardBingo :key="card.bingo_card_id" :numbers="card.data" />
+        <li
+          v-for="card in cardList"
+          class="cardList-item"
+          :key="card.bingo_card_id"
+        >
+          <CardBingo :numbers="card.data" />
         </li>
       </ul>
     </template>
@@ -23,6 +27,18 @@ const { cardList } = useCardsStore();
     scroll-snap-type: x mandatory;
     overflow-x: scroll;
     overflow-y: hidden;
+
+    &::-webkit-scrollbar {
+      height: 7px;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+      z-index: 99;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: #b4b5bd;
+    }
   }
   &-item {
     scroll-snap-align: center;
