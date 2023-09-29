@@ -11,9 +11,13 @@ import { getCookie } from "../utils/cookies";
 import { useRoute } from "vue-router";
 import { getCards } from "../services/card.service";
 import { useCardsStore } from "../store/cardsStore";
+import { useGameStore } from "../store/gameStore";
+
+const { pastNumbers, setPastNumbers } = useGameStore();
 
 let startGame = ref<boolean>(false);
-let pastNumbers = ref<number[]>([]);
+
+let currentBall = ref<number>(0);
 let isMobile = ref<boolean>(window.innerWidth < 768);
 
 const route = useRoute();
@@ -91,7 +95,8 @@ onMounted(() => {
           // alert("nueva bola obtenida");
 
           newNumberBall = +e.data.number as number;
-          pastNumbers.value.push(newNumberBall);
+          currentBall.value = newNumberBall;
+          setPastNumbers(newNumberBall);
           // alert(`nueva bola obtenida: ${newNumberBall}`);
 
           startGame.value = false;
@@ -238,7 +243,15 @@ const onStartGame = () => {
       </div>
       <div class="canvas-grid">
         <Canvas :startGame="startGame" />
-        <div class="py-5 md:py-0 text-white">bolita</div>
+        <div class="py-5 md:py-0 text-white">
+          <div
+            v-if="!!currentBall"
+            :key="currentBall"
+            class="current-ball text-4xl font-medium"
+          >
+            {{ currentBall }}
+          </div>
+        </div>
       </div>
       <Acordion title="History Balls" v-if="isMobile">
         <div class="p-5 border border-gray-200 dark:border-gray-700">
@@ -293,18 +306,17 @@ const onStartGame = () => {
   position: relative;
   animation-name: rotateBall;
   animation-duration: 1s;
-  animation-iteration-count: infinite;
   animation-timing-function: linear;
   box-shadow: rgb(0, 0, 0, 0.5) 0px 0px 10px;
 }
 
 @keyframes rotateBall {
   0% {
-    transform: rotate(0deg);
+    transform: scale(0);
   }
 
   100% {
-    transform: rotate(360deg);
+    transform: scale(1);
   }
 }
 </style>
