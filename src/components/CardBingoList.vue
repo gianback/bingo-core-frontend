@@ -16,7 +16,6 @@ const { cardList } = useCardsStore();
         </li>
       </ul>
     </template>
-    <h2 v-else class="text-white text-center text-3xl">No hay Tarjetas</h2>
   </section>
 </template>
 <style lang="postcss">
