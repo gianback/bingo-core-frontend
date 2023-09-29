@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import freeSpace from "../assets/free-space.svg";
+import { useGameStore } from "../store/gameStore";
 
 const { numbers } = defineProps<{
   numbers: number[][];
 }>();
+
+const { pastNumbers } = useGameStore();
 
 const shadowCards = Array(5).fill(Array(5).fill(0));
 </script>
@@ -23,7 +26,7 @@ const shadowCards = Array(5).fill(Array(5).fill(0));
         :key="index1"
         class="bg-white font-bold text-2xl text-center border-black divide-solid border-t-[1px] last:border-r-[1px]"
       >
-        <template v-for="(n, index2) in number" :key="index2">
+        <template v-for="n in number" :key="n">
           <div
             v-if="n === null"
             class="icon flex items-center h-[49px] p-2 w-full border-black divide-solid border-l-[1px] border-b-[1px]"
@@ -32,7 +35,7 @@ const shadowCards = Array(5).fill(Array(5).fill(0));
           </div>
           <div
             :class="`${
-              shadowCards[index1][index2] === 1 ? 'bg-red-500' : ''
+              pastNumbers.includes(n) ? 'bg-red-500' : ''
             } p-2 border-black divide-solid border-l-[1px] border-b-[1px]`"
             v-else
           >
