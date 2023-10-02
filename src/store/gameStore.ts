@@ -5,7 +5,7 @@ export const useGameStore = defineStore("game", () => {
   const pastNumbers = reactive<number[]>([]);
 
   const setPastNumbers = (newNumber: number) => {
-    pastNumbers.push(newNumber);
+    pastNumbers.unshift(newNumber);
   };
 
   return { pastNumbers, setPastNumbers };

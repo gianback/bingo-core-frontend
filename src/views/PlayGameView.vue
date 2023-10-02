@@ -19,7 +19,6 @@ let startGame = ref<boolean>(false);
 
 let currentBall = ref<number>(0);
 let isMobile = ref<boolean>(window.innerWidth < 768);
-
 const route = useRoute();
 onMounted(() => {
   const echoOptions = {
@@ -108,6 +107,22 @@ onMounted(() => {
 
         default:
           // alert("juego terminado");
+          toast.message("Juego finalizado", {
+            description: "Gracias por jugar!",
+          });
+
+          /* fetch a una ruta
+          
+          userId
+          gameId
+          puntosTotales
+          data ={
+            cardId
+            numbers 1y0[]
+          }
+          
+          
+          */
           break;
       }
 
@@ -119,7 +134,7 @@ onMounted(() => {
     (e) => (isMobile.value = !e.matches),
   );
 });
-const { addCardToList, cardList } = useCardsStore();
+const { addCardToList } = useCardsStore();
 
 const desktopMediaQuery = window.matchMedia("(min-width: 720px)");
 
@@ -130,26 +145,20 @@ const handleSubmit = async (e: Event) => {
 
   const cardNumbers = formData.get("card-number") as string;
   const cards = await getCards(+cardNumbers, route.params.id as string);
+  console.log({ cards });
   cards["bingo-cards"].forEach((card) => {
     addCardToList(card);
   });
 };
-
-const onStartGame = () => {
-  if (cardList.length === 0) {
-    toast.error("Necesitas Adquirir tarjetas para poder jugar");
-  }
-};
 </script>
 
 <template>
-  <Toaster richColors />
+  <Toaster richColors position="top-right" />
   <main class="flex-1 bg-[#313131] px-4 md:px-8">
     <h1 class="text-4xl text-white uppercase font-bold italic text-center py-8">
       Virtual bingo hot! {{ startGame }}
     </h1>
     <div class="home-ctn">
-      <!-- <button on:click={() => (startGame = !startGame)}> change </button> -->
       <div class="order-3 md:order-none">
         <Acordion title="Leadersboard" v-if="isMobile">
           <div class="grid grid-cols-2">
@@ -173,7 +182,7 @@ const onStartGame = () => {
                 type="number"
                 class="rounded-sm w-full p-1"
                 id="card-number"
-                :value="1"
+                :value="0"
                 :min="1"
                 :max="20"
                 name="card-number"
@@ -186,12 +195,6 @@ const onStartGame = () => {
               Agregar
             </button>
           </form>
-          <button
-            @click="onStartGame"
-            class="mt-2 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-          >
-            Iniciar Juego
-          </button>
           <div>
             <h2 class="text-white text-2xl">Historial:</h2>
           </div>
@@ -218,7 +221,7 @@ const onStartGame = () => {
                 type="number"
                 class="rounded-sm w-full p-1"
                 id="card-number"
-                :value="1"
+                :value="0"
                 :min="1"
                 :max="20"
                 name="card-number"
@@ -233,12 +236,6 @@ const onStartGame = () => {
               </button>
             </div>
           </form>
-          <button
-            @click="onStartGame"
-            class="mt-2 py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-          >
-            Iniciar Juego
-          </button>
         </div>
       </div>
       <div class="canvas-grid">
