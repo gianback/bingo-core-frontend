@@ -17,23 +17,20 @@ export const registerService = async ({
   password_confirmation,
   surname,
 }: Props) => {
-  const resp = await fetch(
-    `${import.meta.env.VITE_URL_BACKEND}/auth/register`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        lastname,
-        name,
-        password,
-        password_confirmation,
-        surname,
-      }),
+  const resp = await fetch(`${process.env.VITE_URL_BACKEND}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({
+      email,
+      lastname,
+      name,
+      password,
+      password_confirmation,
+      surname,
+    }),
+  });
 
   const data = (await resp.json()) as APIResponse<any>;
 

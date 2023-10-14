@@ -16,7 +16,7 @@ export const calculatePrize = (card: number[][], winNumbers: number[]) => {
         return 1;
       }
       return winNumbers.includes(number) ? 1 : 0;
-    }),
+    })
   );
 
   //1er si todos son 1 horizontalmente

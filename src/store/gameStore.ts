@@ -1,12 +1,25 @@
-import { defineStore } from "pinia";
-import { reactive } from "vue";
+import { BingoCard } from "@/services/card.service";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-export const useGameStore = defineStore("game", () => {
-  const pastNumbers = reactive<number[]>([]);
+type GameStoreState = {
+  pastNumbers: number[];
+  setPastNumbers: (pastNumbers: number[]) => void;
+  cardList: BingoCard[];
+  addCardToList: (card: BingoCard) => void;
+};
 
-  const setPastNumbers = (newNumber: number) => {
-    pastNumbers.unshift(newNumber);
-  };
-
-  return { pastNumbers, setPastNumbers };
-});
+export const useGameStore = create<GameStoreState>()(
+  persist(
+    (set) => ({
+      pastNumbers: [],
+      setPastNumbers: (pastNumbers: number[]) => set({ pastNumbers }),
+      cardList: [],
+      addCardToList: (card: any) =>
+        set((state) => ({ cardList: [...state.cardList, card] })),
+    }),
+    {
+      name: "game-store",
+    }
+  )
+);

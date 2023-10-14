@@ -1,6 +1,5 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 export interface UserData {
   id: number;
   name: string;
@@ -8,25 +7,26 @@ export interface UserData {
 }
 type userStore = Pick<UserData, "id" | "name">;
 
-export const userStore = defineStore("user", () => {
-  const user = ref<userStore>(
-    JSON.parse(localStorage.getItem("user") as string) || {
-      id: 0,
-      name: "",
-    },
-  );
-  let isAuth = ref(
-    !!JSON.parse(localStorage.getItem("isAuth") as string) || false,
-  );
+type UseUserStore = {
+  user: userStore;
+  isAuth: boolean;
+  setUser: (user: userStore) => void;
+  setIsAuth: (isAuth: boolean) => void;
+};
 
-  const setUser = (newUser: userStore) => {
-    user.value = newUser;
-    localStorage.setItem("user", JSON.stringify(newUser));
-  };
-  const setIsAuth = (status: boolean) => {
-    isAuth.value = status;
-    localStorage.setItem("isAuth", JSON.stringify(status));
-  };
-
-  return { user, setUser, isAuth, setIsAuth };
-});
+export const useUserStore = create<UseUserStore>()(
+  persist(
+    (set) => ({
+      user: {
+        id: 0,
+        name: "",
+      },
+      isAuth: false,
+      setUser: (user) => set((_state) => ({ user })),
+      setIsAuth: (isAuth) => set((_state) => ({ isAuth })),
+    }),
+    {
+      name: "user-store",
+    }
+  )
+);

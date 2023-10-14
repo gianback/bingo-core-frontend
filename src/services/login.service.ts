@@ -1,5 +1,5 @@
 export const loginService = async (email: string, password: string) => {
-  const resp = await fetch(`${import.meta.env.VITE_URL_BACKEND}/auth/login`, {
+  const resp = await fetch(`${process.env.VITE_URL_BACKEND}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
