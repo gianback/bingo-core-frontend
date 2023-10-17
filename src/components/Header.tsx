@@ -6,12 +6,14 @@ import { usePathname, useRouter } from "next/navigation";
 export function Header() {
   const { push } = useRouter();
   const path = usePathname();
-  const setIsAuth = useUserStore((state) => state.setIsAuth);
-  const setUser = useUserStore((state) => state.setUser);
+  const [setIsAuth, setUser] = useUserStore((state) => [
+    state.setIsAuth,
+    state.setUser,
+  ]);
 
   const onLogout = () => {
     setUser({
-      id: 0,
+      id: "",
       name: "",
     });
     setIsAuth(false);
