@@ -20,6 +20,7 @@ export const useGameStore = create<GameStoreState>()(
     }),
     {
       name: "game-store",
+      getStorage: () => localStorage,
     }
   )
 );
