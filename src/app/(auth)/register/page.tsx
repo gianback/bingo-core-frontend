@@ -4,6 +4,7 @@ import { registerService } from "@/services/register.service";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { Toaster, toast } from "sonner";
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +15,9 @@ export default function Register() {
     const formData = new FormData(form);
 
     const values = [...formData.values()];
-    if (values.some((value) => value === "")) return;
+    if (values.some((value) => value === "")) {
+      return toast.error("Please fill all fields");
+    }
 
     /* password validate */
     const password = formData.get("password") as string;
@@ -41,8 +44,8 @@ export default function Register() {
         form.reset();
         push("/login");
       } else {
-        /* TODO: pnpm install vue-sonner */
-        alert("Error registering user");
+        alert("");
+        toast.error("Error registering user");
       }
     } catch (error: any) {
       throw new Error(error);
@@ -72,6 +75,7 @@ export default function Register() {
                   type="text"
                   name="name"
                   id="name"
+                  required
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="John"
                 />
@@ -87,6 +91,7 @@ export default function Register() {
                   type="text"
                   name="surname"
                   id="surname"
+                  required
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Doe"
                 />
@@ -101,6 +106,7 @@ export default function Register() {
                 <input
                   type="text"
                   name="lastname"
+                  required
                   id="lastname"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Rowland"
@@ -116,6 +122,7 @@ export default function Register() {
                 <input
                   type="email"
                   name="email"
+                  required
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
@@ -131,6 +138,7 @@ export default function Register() {
                 <input
                   type="password"
                   name="password"
+                  required
                   id="password"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -147,6 +155,7 @@ export default function Register() {
                   type="password"
                   name="password_confirmation"
                   id="password_confirmation"
+                  required
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
@@ -183,6 +192,7 @@ export default function Register() {
           </div>
         </div>
       </div>
+      <Toaster richColors />
     </section>
   );
 }

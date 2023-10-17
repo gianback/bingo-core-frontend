@@ -1,12 +1,11 @@
 "use client";
 import { Loader } from "@/components/Loader";
-import { APIResponse } from "@/interfaces/api";
 import { loginService } from "@/services/login.service";
 import { UserData, useUserStore } from "@/store/userStore";
 import { setCookie } from "@/utils/cookies";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, use, useState } from "react";
 
 export default function Login() {
   const { push } = useRouter();
@@ -19,21 +18,20 @@ export default function Login() {
     const formData = new FormData(form);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+
+    if (!email || !password) return alert("Please fill all fields");
+
     try {
       setIsLoading(true);
-      const session = (await loginService(
-        email,
-        password
-      )) as APIResponse<UserData>;
-      const { id, name, token } = session.data;
+      const session = (await loginService(email, password)) as UserData;
+
+      const { id, name, token } = session;
 
       setUser({ id, name });
       setIsAuth(true);
 
       setCookie("token", token);
-      if (session.type === "success") {
-        push("/");
-      }
+      push("/");
     } catch (error: any) {
       throw new Error(error);
     } finally {

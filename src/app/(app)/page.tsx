@@ -1,12 +1,11 @@
 "use client";
-import { Header } from "@/components/Header";
-import { useUserStore } from "@/store/userStore";
+import { useHydratedStore } from "@/store/userStore";
 import { baseApi } from "@/utils/axios";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const { push } = useRouter();
-  const user = useUserStore((state) => state.user);
+  const user = useHydratedStore("user");
   const handleStartGame = async () => {
     const res = await baseApi.get("/games/join-game");
     push(`/play-game/${res.data.game.id}`);
