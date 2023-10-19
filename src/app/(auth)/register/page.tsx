@@ -178,15 +178,10 @@ export default function Register() {
                 Already have an account?
                 <Link
                   href={"/login"}
-                  className="font-medium text-gray-600 hover:underline dark:text-gray-500"
+                  className="ml-3 font-medium text-gray-600 hover:underline dark:text-gray-500"
                 >
                   Login here
                 </Link>
-                {/* <router-link
-                  className="font-medium text-gray-600 hover:underline dark:text-gray-500"
-                  to="/login"
-                >
-                </router-link> */}
               </p>
             </form>
           </div>

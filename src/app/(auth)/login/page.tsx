@@ -9,7 +9,7 @@ import { FormEvent, use, useState } from "react";
 
 export default function Login() {
   const { push } = useRouter();
-  const { setIsAuth, setUser } = useUserStore();
+  const { setUser } = useUserStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
@@ -28,8 +28,6 @@ export default function Login() {
       const { id, name, token } = session;
 
       setUser({ id, name });
-      setIsAuth(true);
-
       setCookie("token", token);
       push("/");
     } catch (error: any) {
@@ -96,12 +94,10 @@ export default function Login() {
                 Don’t have an account yet?
                 <Link
                   href={"/register"}
-                  className="font-medium text-gray-600 hover:underline dark:text-gray-500"
+                  className="ml-3 font-medium text-gray-600 hover:underline dark:text-gray-500"
                 >
                   Sign Up
                 </Link>
-                {/* <router-link className="font-medium text-gray-600 hover:underline dark:text-gray-500" to="/register">Sign
-                up</router-link> */}
               </p>
             </form>
           </div>
