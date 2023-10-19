@@ -1,33 +1,45 @@
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
-  //   let cookie = request.cookies.get("token");
+export async function middleware(request: NextRequest) {
+  const { value } = request.cookies.get("token") as RequestCookie;
+
+  const resp = await fetch(
+    `${process.env.NEXT_PUBLIC_URL_BACKEND}/auth/check-status`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${value}`,
+      },
+    }
+  );
+  const { statusCode } = await resp.json();
+  console.log({ statusCode });
   if (
     request.nextUrl.pathname.startsWith("/play-game") ||
-    request.nextUrl.pathname.startsWith("/")
+    request.nextUrl.pathname === "/"
   ) {
-    // if(!token){
-    //     return NextResponse.redirect(new URL("/login", request.url));
-    // }else{
-    //     return NextResponse.next();
-    // }
+    if (statusCode === 401) {
+      request.cookies.delete("token");
+      return NextResponse.redirect(new URL("/login", request.url));
+    } else {
+      return NextResponse.next();
+    }
   }
   if (
     request.nextUrl.pathname.startsWith("/login") ||
     request.nextUrl.pathname.startsWith("/register")
   ) {
-    // if(token){
-    //     return NextResponse.redirect(new URL("/", request.url));
-    // }else{
-    //     return NextResponse.next();
-    // }
+    if (statusCode === 401) {
+      return NextResponse.next();
+    } else {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
   }
   return NextResponse.next();
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
   matcher: ["/", "/play-game/:path*", "/login", "/register"],
 };
