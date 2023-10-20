@@ -1,15 +1,18 @@
 "use client";
-import { useHydratedStore } from "@/store/userStore";
+import { AxiosInterceptor } from "@/interceptors/axios.interceptor";
+import { useHydratedUserStore } from "@/store/userStore";
 import { baseApi } from "@/utils/axios";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const { push } = useRouter();
-  const user = useHydratedStore("user");
+  const user = useHydratedUserStore("user");
   const handleStartGame = async () => {
-    const res = await baseApi.get("/games/join-game");
-    push(`/play-game/${res.data.game.id}`);
+    const res = (await baseApi.get("/game-rooms/join-game")) as any;
+    push(`/play-game/${res.id}`);
   };
+  AxiosInterceptor();
+
   return (
     <main className="h-screen flex-1 bg-gray-900">
       <div className="bg-white dark:bg-gray-900">

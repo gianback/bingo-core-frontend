@@ -38,7 +38,7 @@ export const useUserStore = create<UseUserStore>()(
   )
 );
 
-export const useHydratedStore = <
+export const useHydratedUserStore = <
   T extends keyof OmittedFunctionKeys<UseUserStore>
 >(
   key: T

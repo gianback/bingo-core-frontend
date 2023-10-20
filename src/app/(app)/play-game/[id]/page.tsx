@@ -1,13 +1,14 @@
 "use client";
 import { Acordion } from "@/components/Acordion";
 import { Canvas } from "@/components/Canvas";
-import { CardBingoList } from "@/components/CardBingoList";
 import { useGameStore } from "@/store/gameStore";
 import { FormEvent, useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import { Toaster } from "sonner";
 import { getCards } from "@/services/card.service";
 import { useParams } from "next/navigation";
+import { AxiosInterceptor } from "@/interceptors/axios.interceptor";
+import { CardBingoList } from "@/components/CardBingoList";
 
 export default function PlayGame() {
   const [startGame, setStartGame] = useState(false);
@@ -15,7 +16,7 @@ export default function PlayGame() {
   const [isMobile, setIsMobile] = useState(false);
   const { pastNumbers, setPastNumbers, addCardToList } = useGameStore();
   const params = useParams();
-  console.log(params);
+  AxiosInterceptor();
   useEffect(() => {
     const desktopMediaQuery = window.matchMedia("(min-width: 720px)");
     window.innerWidth < 768 ? setIsMobile(true) : setIsMobile(false);
@@ -35,8 +36,8 @@ export default function PlayGame() {
     const formData = new FormData(form);
 
     const cardNumbers = formData.get("card-number") as string;
-    const cards = await getCards(+cardNumbers, params.id as string);
-    cards["bingo-cards"].forEach((card) => {
+    const cards = (await getCards(+cardNumbers, params.id as string)) as any;
+    cards.forEach((card: any) => {
       addCardToList(card);
     });
   };

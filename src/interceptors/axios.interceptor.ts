@@ -9,7 +9,6 @@ import { baseApi } from "../utils/axios";
 export const AxiosInterceptor = () => {
   const updateHeader = (request: InternalAxiosRequestConfig) => {
     const token = getCookie("token") as string;
-
     const newHeaders = {
       Authorization: `Bearer ${token}`,
       Accept: "application/json",
@@ -26,7 +25,11 @@ export const AxiosInterceptor = () => {
 
   baseApi.interceptors.response.use(
     (response: AxiosResponse) => {
-      return response.data;
+      console.log(response);
+      if (response.data) {
+        return response.data;
+      }
+      return response;
     },
     (error) => {
       console.log("error", getValidationError(error));

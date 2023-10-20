@@ -7,12 +7,12 @@ export interface GetCardsData {
 
 export interface BingoCard {
   bingo_card_id: number;
-  data: Array<number[]>;
+  bingoCard: Array<number[]>;
 }
 
 export const getCards = async (qty: number, id: string) => {
-  const resp = (await baseApi.post(`/games/${id}/generate-bingo-cards`, {
+  const resp = (await baseApi.post(`/game-rooms/${id}/generate-bingo-cards`, {
     quantity: qty,
   })) as APIResponse<GetCardsData>;
-  return resp.data;
+  return resp;
 };
