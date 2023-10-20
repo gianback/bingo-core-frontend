@@ -5,20 +5,21 @@ import type { NextRequest } from "next/server";
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token") as RequestCookie;
 
-  const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_URL_BACKEND}/auth/check-status`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token.value}`,
-      },
-    }
-  );
-  const { statusCode } = await resp.json();
   if (
     request.nextUrl.pathname.startsWith("/play-game") ||
     request.nextUrl.pathname === "/"
   ) {
+    if (!token) return NextResponse.redirect(new URL("/login", request.url));
+    const resp = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_BACKEND}/auth/check-status`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      }
+    );
+    const { statusCode } = await resp.json();
     if (statusCode === 401) {
       request.cookies.delete("token");
       request.cookies.set("token", "");
@@ -31,6 +32,18 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/login") ||
     request.nextUrl.pathname.startsWith("/register")
   ) {
+    if (!token) return NextResponse.next();
+
+    const resp = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_BACKEND}/auth/check-status`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      }
+    );
+    const { statusCode } = await resp.json();
     if (statusCode === 401) {
       return NextResponse.next();
     } else {
