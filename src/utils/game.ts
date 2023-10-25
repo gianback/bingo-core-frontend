@@ -1,4 +1,5 @@
 const PRIZE_LINES = {
+  0: 0,
   1: 2,
   2: 4,
   3: 49,
@@ -7,9 +8,18 @@ const PRIZE_LINES = {
   6: 9999,
 };
 type PrizeLineKey = keyof typeof PRIZE_LINES;
+
+/* 
+@params card: number[][]
+@params winNumbers: number[]
+@returns { points: number, binaryMatriz: number[][] }
+
+
+*/
+
 export const calculatePrize = (card: number[][], winNumbers: number[]) => {
   let lines = 0;
-
+  /* Obtiene la matriz en binario */
   const binaryMatriz = card.map((array) =>
     array.map((number) => {
       if (number === null) {
@@ -19,6 +29,7 @@ export const calculatePrize = (card: number[][], winNumbers: number[]) => {
     })
   );
 
+  /* Calcula los puntos */
   //1er si todos son 1 horizontalmente
   binaryMatriz.forEach((item) => {
     const isOk = item.every((number) => number === 1);
@@ -49,5 +60,5 @@ export const calculatePrize = (card: number[][], winNumbers: number[]) => {
     }
   }
   const result = lines as PrizeLineKey;
-  return PRIZE_LINES[result];
+  return { points: PRIZE_LINES[result], binaryMatriz };
 };

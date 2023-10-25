@@ -10,11 +10,30 @@ import { useParams } from "next/navigation";
 import { AxiosInterceptor } from "@/interceptors/axios.interceptor";
 import { CardBingoList } from "@/components/CardBingoList";
 
+import { useSocket } from "@/hooks/useSocket";
+import { calculatePrize } from "@/utils/game";
+type SocketDataListener = {
+  event: string;
+  data?: {
+    createdAt: string;
+    deletedAt: null;
+    gameRoomId: string;
+    id: string;
+    label: string;
+    letter: string;
+    number: number;
+    updatedAt: string;
+  };
+};
 export default function PlayGame() {
   const [startGame, setStartGame] = useState(false);
   const [currentBall, setCurrentBall] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const { pastNumbers, setPastNumbers, addCardToList } = useGameStore();
+  const socket = useSocket(process.env.NEXT_PUBLIC_URL_BACKEND as string);
+  const { setPastNumbers, addCardToList, resetPastNumbers, resetCardList } =
+    useGameStore();
+
+  const pastNumbers = useGameStore((state) => state.pastNumbers);
   const params = useParams();
   AxiosInterceptor();
   useEffect(() => {
@@ -29,6 +48,48 @@ export default function PlayGame() {
       );
     };
   }, []);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("connect", () => {
+        console.log("conect");
+      });
+
+      socket.on(
+        `GameRoomEventStatusUpdate:${params.id}`,
+        (data: SocketDataListener) => {
+          if (data.event === "GETTING_NEXT_BALL_EVENT") {
+            setStartGame(true);
+          } else if (data.event === "PICKED_BALL_EVENT") {
+            setCurrentBall(data.data?.number as number);
+            setPastNumbers(data.data?.number as number);
+          } else if (data.event === "FINISHED_GAME_EVENT") {
+            const result = useGameStore.getState().cardList.map((card) => {
+              const price = calculatePrize(
+                card.bingoCard,
+                useGameStore.getState().pastNumbers
+              );
+              return {
+                ...price,
+                cardId: card.id,
+              };
+            });
+            console.log({ result });
+            setStartGame(false);
+            setCurrentBall(0);
+            resetPastNumbers();
+            resetCardList();
+          }
+        }
+      );
+    }
+    return () => {
+      if (socket) {
+        socket.disconnect();
+        console.log("desconectado");
+      }
+    };
+  }, [params.id, socket, resetPastNumbers, setPastNumbers, resetCardList]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -127,13 +188,13 @@ export default function PlayGame() {
               </div>
             )}
           </div>
-          <div className="canvas-grid">
+          <div className={styles["canvas-grid"]}>
             <Canvas startGame={startGame} />
-            <div className="py-5 md:py-0 text-white">
+            <div className="py-5 md:py-0 text-white flex justify-center items-center">
               {!!currentBall && (
                 <div
                   key={currentBall}
-                  className="current-ball text-4xl font-medium"
+                  className={`text-4xl font-medium ${styles["current-ball"]}`}
                 >
                   {currentBall}
                 </div>
@@ -149,13 +210,14 @@ export default function PlayGame() {
           ) : (
             <div className="p-5 border border-gray-200 dark:border-gray-700">
               <div className="grid grid-cols-5 gap-3">
-                {/* <div
-      v-for="(number, index) in pastNumbers"
-      :key="index"
-      className="rounded-full bg-red-300 text-black flex items-center justify-center w-10 h-10 text-lg"
-    >
-      {{ number }}
-    </div> */}
+                {pastNumbers.map((number) => (
+                  <div
+                    className="rounded-full bg-red-300 text-black flex items-center justify-center w-10 h-10 text-lg"
+                    key={number}
+                  >
+                    {number}
+                  </div>
+                ))}
               </div>
             </div>
           )}

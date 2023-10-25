@@ -8,6 +8,15 @@ import { Toaster, toast } from "sonner";
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
+  const [registerData, setRegisterData] = useState({
+    name: "",
+    surname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+  });
+
   const { push } = useRouter();
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -160,10 +169,10 @@ export default function Register() {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
               </div>
-              <div className="relative">
+              <div className="relative flex justify-center items-center">
                 <button
                   type="submit"
-                  className="w-full text-white bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+                  className="text-white bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
                 >
                   Create an account
                 </button>

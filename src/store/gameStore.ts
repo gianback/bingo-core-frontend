@@ -5,8 +5,10 @@ import { persist } from "zustand/middleware";
 
 type GameStoreState = {
   pastNumbers: number[];
-  setPastNumbers: (pastNumbers: number[]) => void;
+  setPastNumbers: (newNumber: number) => void;
   cardList: BingoCard[];
+  resetCardList: () => void;
+  resetPastNumbers: () => void;
   addCardToList: (card: BingoCard) => void;
 };
 
@@ -24,8 +26,12 @@ export const useGameStore = create<GameStoreState>()(
   persist(
     (set) => ({
       pastNumbers: initialStates.pastNumbers,
-      setPastNumbers: (pastNumbers: number[]) => set({ pastNumbers }),
+      setPastNumbers: (newNumber: number) =>
+        set((state) => ({ pastNumbers: [...state.pastNumbers, newNumber] })),
+
       cardList: initialStates.cardList,
+      resetPastNumbers: () => set({ pastNumbers: [] }),
+      resetCardList: () => set({ cardList: [] }),
       addCardToList: (card: any) =>
         set((state) => ({ cardList: [...state.cardList, card] })),
     }),

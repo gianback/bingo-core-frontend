@@ -5,14 +5,15 @@ import { validateToken } from "./services/validate-token.service";
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token") as RequestCookie;
-
+  console.log({ token });
   if (
     request.nextUrl.pathname.startsWith("/play-game") ||
     request.nextUrl.pathname === "/"
   ) {
+    console.log("paasdas");
     if (!token) return NextResponse.redirect(new URL("/login", request.url));
     const statusCode = await validateToken(token.value);
-
+    console.log({ statusCode }, "/");
     if (statusCode === 401) {
       request.cookies.delete("token");
       request.cookies.set("token", "");
@@ -29,7 +30,7 @@ export async function middleware(request: NextRequest) {
     if (!token) return NextResponse.next();
 
     const statusCode = await validateToken(token.value);
-
+    console.log({ statusCode });
     return statusCode === 401
       ? NextResponse.next()
       : NextResponse.redirect(new URL("/", request.url));

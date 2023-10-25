@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-type props = {
+type Props = {
   startGame: boolean;
 };
 const ballsInMoving = [
@@ -18,30 +18,30 @@ const ballsInMoving = [
 ];
 
 const staticBalls = [
-  { x: 100, y: 560, vx: 20, vy: 20 },
-  { x: 250, y: 560, vx: 20, vy: 20 },
-  { x: 350, y: 560, vx: 20, vy: 20 },
-  { x: 430, y: 560, vx: 20, vy: 20 },
-  { x: 490, y: 560, vx: 20, vy: 20 },
-  { x: 550, y: 560, vx: 20, vy: 20 },
-  { x: 610, y: 560, vx: 20, vy: 20 },
-  { x: 680, y: 560, vx: 20, vy: 20 },
-  { x: 770, y: 560, vx: 20, vy: 20 },
-  { x: 880, y: 560, vx: 20, vy: 20 },
-  { x: 1090, y: 560, vx: 20, vy: 20 },
+  { x: 100, y: 560, vx: 0, vy: 0 },
+  { x: 250, y: 560, vx: 0, vy: 0 },
+  { x: 350, y: 560, vx: 0, vy: 0 },
+  { x: 430, y: 560, vx: 0, vy: 0 },
+  { x: 490, y: 560, vx: 0, vy: 0 },
+  { x: 550, y: 560, vx: 0, vy: 0 },
+  { x: 610, y: 560, vx: 0, vy: 0 },
+  { x: 680, y: 560, vx: 0, vy: 0 },
+  { x: 770, y: 560, vx: 0, vy: 0 },
+  { x: 880, y: 560, vx: 0, vy: 0 },
+  { x: 1090, y: 560, vx: 0, vy: 0 },
 ];
 const canvasWidth = 800;
 const canvasHeight = 450;
 const frameDiameter = 350; // Diámetro del marco whiteondo
 const frameX = canvasWidth - frameDiameter - 50; // Coordenada X del marco whiteondo a la derecha, separado por 200 píxeles
 const frameY = (canvasHeight - frameDiameter) / 2; // Coordenada Y del marco whiteondo centrado verticalmente
-export function Canvas({ startGame }: props) {
-  const [balls, setBalls] = useState(startGame ? ballsInMoving : staticBalls);
-
+export function Canvas({ startGame }: Props) {
+  const [balls, setBalls] = useState<any>([]);
   const animate = useCallback(() => {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+    const ctx = canvas?.getContext("2d") as CanvasRenderingContext2D;
     // Limpia el lienzo
+    if (!ctx) return;
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     // Dibuja el marco whiteondo
@@ -166,7 +166,7 @@ export function Canvas({ startGame }: props) {
 
     // Mueve y dibuja las bolitas dentro del marco redondo
 
-    balls.forEach((ball) => {
+    balls.forEach((ball: any) => {
       ball.x += ball.vx;
       ball.y += ball.vy;
 
@@ -202,27 +202,27 @@ export function Canvas({ startGame }: props) {
       ctx.fill();
     });
 
-    // Solicita el próximo cuadro de animación si startGame es verdadero
-    if (startGame) {
-      requestAnimationFrame(animate);
-    }
-  }, [startGame, balls]);
+    requestAnimationFrame(animate);
+  }, [balls]);
 
   useEffect(() => {
-    animate();
+    requestAnimationFrame(animate);
     if (startGame) {
       setBalls(ballsInMoving);
     } else {
+      // animate();
       setBalls(staticBalls);
     }
-  }, [startGame, animate]);
+  }, [animate, startGame]);
 
   return (
-    <canvas
-      id="canvas"
-      className="mx-auto max-w-[800px] w-full"
-      width={canvasWidth}
-      height={canvasHeight}
-    />
+    <>
+      <canvas
+        id="canvas"
+        className="mx-auto max-w-[800px] w-full"
+        width={canvasWidth}
+        height={canvasHeight}
+      />
+    </>
   );
 }

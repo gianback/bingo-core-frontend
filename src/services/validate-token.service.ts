@@ -8,6 +8,10 @@ export const validateToken = async (token: string): Promise<number> => {
       },
     }
   );
+
+  if (!resp.ok) {
+    throw new Error("Something went wrong with check status");
+  }
   const { statusCode } = await resp.json();
 
   return statusCode;

@@ -6,13 +6,15 @@ export interface GetCardsData {
 }
 
 export interface BingoCard {
-  bingo_card_id: number;
+  id: string;
   bingoCard: Array<number[]>;
+  template: number[][];
 }
 
 export const getCards = async (qty: number, id: string) => {
   const resp = (await baseApi.post(`/game-rooms/${id}/generate-bingo-cards`, {
     quantity: qty,
   })) as APIResponse<GetCardsData>;
+
   return resp;
 };

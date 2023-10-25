@@ -15,13 +15,13 @@ export function CardBingo({ numbers }: props) {
         </h2>
       </header>
       <div className="grid grid-cols-5 px-8">
-        {numbers.map((number, index1) => (
+        {numbers.map((number, index) => (
           <div
-            key={index1}
+            key={index}
             className="bg-white font-bold text-2xl text-center border-black divide-solid border-t-[1px] last:border-r-[1px]"
           >
-            {number.map((n, index2) => (
-              <>
+            {number.map((n, index) => (
+              <div key={index}>
                 {n === null ? (
                   <picture className="icon flex items-center h-[49px] p-2 w-full border-black divide-solid border-l-[1px] border-b-[1px]">
                     <img
@@ -39,7 +39,7 @@ export function CardBingo({ numbers }: props) {
                     {n}
                   </div>
                 )}
-              </>
+              </div>
             ))}
           </div>
         ))}

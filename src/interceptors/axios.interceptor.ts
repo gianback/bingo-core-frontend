@@ -4,7 +4,7 @@ import {
   InternalAxiosRequestConfig,
 } from "axios";
 import { getCookie } from "../utils/cookies";
-import { getValidationError } from "../utils/getValidationError";
+import { getValidationError } from "../utils/error";
 import { baseApi } from "../utils/axios";
 export const AxiosInterceptor = () => {
   const updateHeader = (request: InternalAxiosRequestConfig) => {
@@ -25,7 +25,6 @@ export const AxiosInterceptor = () => {
 
   baseApi.interceptors.response.use(
     (response: AxiosResponse) => {
-      console.log(response);
       if (response.data) {
         return response.data;
       }
