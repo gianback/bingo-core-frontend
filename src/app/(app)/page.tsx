@@ -9,7 +9,7 @@ export default function Home() {
   const user = useHydratedUserStore("user");
   const handleStartGame = async () => {
     const res = (await baseApi.get("/game-rooms/join-game")) as any;
-    push(`/play-game/${res.id}`);
+    push(`/play-game/${res.data.data.id}`);
   };
   AxiosInterceptor();
 

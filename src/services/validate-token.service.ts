@@ -1,18 +1,22 @@
-export const validateToken = async (token: string): Promise<number> => {
-  const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_URL_BACKEND}/auth/check-status`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+export const validateToken = async (token: string) => {
+  try {
+    const resp = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_BACKEND}/auth/check-status`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    // console.log(token);
+    // if (!resp.ok) {
+    //   throw new Error("Something went wrong with check status");
+    // }
+    const { statusCode } = await resp.json();
 
-  if (!resp.ok) {
-    throw new Error("Something went wrong with check status");
+    return statusCode;
+  } catch (error) {
+    console.log({ error });
   }
-  const { statusCode } = await resp.json();
-
-  return statusCode;
 };

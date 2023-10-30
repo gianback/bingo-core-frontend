@@ -27,8 +27,8 @@ export default function Login() {
     const { email, "password-login": password } = loginData;
     if (!email || !password) {
       setLoginErrors({
-        email: "Email is required",
-        "password-login": "Password is required",
+        email: "This field is required",
+        "password-login": "This field is required",
       });
       return;
     }

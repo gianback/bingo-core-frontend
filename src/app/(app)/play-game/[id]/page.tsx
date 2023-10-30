@@ -11,7 +11,9 @@ import { AxiosInterceptor } from "@/interceptors/axios.interceptor";
 import { CardBingoList } from "@/components/CardBingoList";
 
 import { useSocket } from "@/hooks/useSocket";
-import { calculatePrize } from "@/utils/game";
+import { getBinaryMatriz } from "@/utils/game";
+import { finishGame } from "@/services/finish-game";
+import { getCookie } from "@/utils/cookies";
 type SocketDataListener = {
   event: string;
   data?: {
@@ -30,6 +32,7 @@ export default function PlayGame() {
   const [currentBall, setCurrentBall] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const socket = useSocket(process.env.NEXT_PUBLIC_URL_BACKEND as string);
+  const token = getCookie("token");
   const { setPastNumbers, addCardToList, resetPastNumbers, resetCardList } =
     useGameStore();
 
@@ -57,7 +60,7 @@ export default function PlayGame() {
 
       socket.on(
         `GameRoomEventStatusUpdate:${params.id}`,
-        (data: SocketDataListener) => {
+        async (data: SocketDataListener) => {
           if (data.event === "GETTING_NEXT_BALL_EVENT") {
             setStartGame(true);
           } else if (data.event === "PICKED_BALL_EVENT") {
@@ -65,16 +68,21 @@ export default function PlayGame() {
             setPastNumbers(data.data?.number as number);
           } else if (data.event === "FINISHED_GAME_EVENT") {
             const result = useGameStore.getState().cardList.map((card) => {
-              const price = calculatePrize(
-                card.bingoCard,
-                useGameStore.getState().pastNumbers
-              );
+              const binaryMatriz = getBinaryMatriz({
+                bingoCard: card.bingoCard,
+                winNumbers: useGameStore.getState().pastNumbers,
+              });
               return {
-                ...price,
-                cardId: card.id,
+                id: card.id,
+                template: binaryMatriz,
               };
             });
-            console.log({ result });
+            const winner = await finishGame({
+              bingoCards: result,
+              roomId: params.id as string,
+            });
+            console.log({ winner });
+
             setStartGame(false);
             setCurrentBall(0);
             resetPastNumbers();
@@ -98,7 +106,8 @@ export default function PlayGame() {
 
     const cardNumbers = formData.get("card-number") as string;
     const cards = (await getCards(+cardNumbers, params.id as string)) as any;
-    cards.forEach((card: any) => {
+    const bingoCardList = cards.data.data;
+    bingoCardList.forEach((card: any) => {
       addCardToList(card);
     });
   };
