@@ -13,7 +13,6 @@ import { CardBingoList } from "@/components/CardBingoList";
 import { useSocket } from "@/hooks/useSocket";
 import { getBinaryMatriz } from "@/utils/game";
 import { finishGame } from "@/services/finish-game";
-import { getCookie } from "@/utils/cookies";
 type SocketDataListener = {
   event: string;
   data?: {
@@ -32,7 +31,6 @@ export default function PlayGame() {
   const [currentBall, setCurrentBall] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const socket = useSocket(process.env.NEXT_PUBLIC_URL_BACKEND as string);
-  const token = getCookie("token");
   const { setPastNumbers, addCardToList, resetPastNumbers, resetCardList } =
     useGameStore();
 
@@ -93,6 +91,7 @@ export default function PlayGame() {
     }
     return () => {
       if (socket) {
+        socket.close();
         socket.disconnect();
         console.log("desconectado");
       }

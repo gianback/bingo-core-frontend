@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import io from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 
 const URL_SOCKET = process.env.NEXT_PUBLIC_URL_SOCKET as string;
 
 export function useSocket(url: string) {
-  const [socket, setSocket] = useState<any>();
+  const [socket, setSocket] = useState<Socket>();
 
   useEffect(() => {
     const socketIo = io(URL_SOCKET);
