@@ -1,20 +1,17 @@
-import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+// import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import * as jose from "jose";
+import { validateToken } from "./utils/jwt";
 
 export async function middleware(request: NextRequest) {
-  const token = request.cookies.get("token") as RequestCookie;
+  const token = request.cookies.get("token");
   if (
     request.nextUrl.pathname.startsWith("/play-game") ||
     request.nextUrl.pathname === "/"
   ) {
     if (!token) return NextResponse.redirect(new URL("/login", request.url));
     try {
-      await jose.jwtVerify(
-        token.value,
-        new TextEncoder().encode(process.env.JWT_SECRET)
-      );
+      await validateToken(token.value);
       return NextResponse.next();
     } catch (error) {
       request.cookies.delete("token");
@@ -28,10 +25,7 @@ export async function middleware(request: NextRequest) {
   ) {
     if (!token) return NextResponse.next();
     try {
-      await jose.jwtVerify(
-        token.value,
-        new TextEncoder().encode(process.env.JWT_SECRET)
-      );
+      await validateToken(token.value);
       return NextResponse.redirect(new URL("/", request.url));
     } catch (error) {
       return NextResponse.next();
