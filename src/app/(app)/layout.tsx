@@ -19,11 +19,11 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en">
-      <body className="flex flex-col h-screen">
-        <Header />
-        {children}
-      </body>
-    </html>
+    // <html lang="en">
+    <div className="flex flex-col h-screen">
+      <Header />
+      {children}
+    </div>
+    // </html>
   );
 }
