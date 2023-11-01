@@ -18,6 +18,7 @@ export const validateToken = async () => {
     return resp.ok;
   } catch (error) {
     console.log({ error });
+
     // throw new Error("Error validating token");
   }
 };
