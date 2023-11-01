@@ -25,9 +25,6 @@ export const AxiosInterceptor = () => {
 
   baseApi.interceptors.response.use(
     (response: AxiosResponse) => {
-      // if (response.data) {
-      //   return response.data;
-      // }
       return response;
     },
     (error) => {

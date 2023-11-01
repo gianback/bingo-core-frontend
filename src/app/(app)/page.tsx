@@ -6,11 +6,13 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const { push } = useRouter();
+
   const user = useHydratedUserStore("user");
   const handleStartGame = async () => {
     const res = (await baseApi.get("/game-rooms/join-game")) as any;
     push(`/play-game/${res.data.data.id}`);
   };
+
   AxiosInterceptor();
 
   return (
