@@ -8,7 +8,7 @@ specifiers:
   axios: 1.5.1
   eslint: '8'
   eslint-config-next: 13.5.4
-  jose: 5.0.1
+  js-confetti: ^0.11.0
   next: 13.5.4
   postcss: '8'
   react: '18'
@@ -22,7 +22,7 @@ specifiers:
 
 dependencies:
   axios: 1.5.1
-  jose: 5.0.1
+  js-confetti: 0.11.0
   next: 13.5.4_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -1750,8 +1750,8 @@ packages:
     hasBin: true
     dev: true
 
-  /jose/5.0.1:
-    resolution: {integrity: sha512-gRVzy7s3RRdGbXmcTdlOswJOjhwPLx1ijIgAqLY6ktzFpOJxxYn4l0fC2vHaHHi4YBX/5FOL3aY+6W0cvQgpug==}
+  /js-confetti/0.11.0:
+    resolution: {integrity: sha512-Hc7I3VI4r4H0nq5q/oQK+JJwGoYRYVHK72fGk8E9Ay1dbh+aiZ9yl0yFp1K4oYeq7YFDQAndYChwqLPA3QWQuA==}
     dev: false
 
   /js-tokens/4.0.0:

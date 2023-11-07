@@ -22,6 +22,7 @@ export default async function RootLayout({
     // <html lang="en">
     <div className="flex flex-col h-screen">
       <Header />
+
       {children}
     </div>
     // </html>

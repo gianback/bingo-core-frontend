@@ -22,25 +22,17 @@ const initialStates = {
   cardList: [],
 };
 
-export const useGameStore = create<GameStoreState>()(
-  persist(
-    (set) => ({
-      pastNumbers: initialStates.pastNumbers,
-      setPastNumbers: (newNumber: number) =>
-        set((state) => ({ pastNumbers: [...state.pastNumbers, newNumber] })),
+export const useGameStore = create<GameStoreState>()((set) => ({
+  pastNumbers: initialStates.pastNumbers,
+  setPastNumbers: (newNumber: number) =>
+    set((state) => ({ pastNumbers: [...state.pastNumbers, newNumber] })),
 
-      cardList: initialStates.cardList,
-      resetPastNumbers: () => set({ pastNumbers: [] }),
-      resetCardList: () => set({ cardList: [] }),
-      addCardToList: (card: any) =>
-        set((state) => ({ cardList: [...state.cardList, card] })),
-    }),
-    {
-      name: "game-store",
-      getStorage: () => localStorage,
-    }
-  )
-);
+  cardList: initialStates.cardList,
+  resetPastNumbers: () => set({ pastNumbers: [] }),
+  resetCardList: () => set({ cardList: [] }),
+  addCardToList: (card: any) =>
+    set((state) => ({ cardList: [...state.cardList, card] })),
+}));
 export const useHydratedGameStore = <
   T extends keyof OmittedFunctionKeys<GameStoreState>
 >(
